@@ -2,6 +2,8 @@ from Bio.Data.PDBData import protein_letters_3to1
 
 from hp_fold.chem.records import ChainRecord
 
+AMINO_ACIDS = frozenset(protein_letters_3to1.values())
+
 
 class UnknownResidueError(ValueError):
     """A residue name outside the 20 standard amino acids."""

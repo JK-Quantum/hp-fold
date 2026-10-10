@@ -110,7 +110,7 @@ uv run scripts/hello_world.py  # N=6 end-to-end
 
 > TODO: Verify titles, authors and provide URLs before the final write-up.
 
-- Dill, K. A. (1985). Theory for the folding and stability of globular proteins (origin of the HP model).
+- Dill, K. A. (1985). Theory for the folding and stability of globular proteins. _Biochemistry_ 24(6):1501-1509.
 
 - Perdomo-Ortiz et al. (2012). Finding low-energy conformations of lattice protein models by quantum annealing. _Scientific Reports_.
 
@@ -123,6 +123,8 @@ uv run scripts/hello_world.py  # N=6 end-to-end
 - Farhi, Goldstone, Gutmann (2014). A quantum approximate optimization algorithm.
 
 - Qiskit documentation (`SparsePauliOp`, `QAOAAnsatz`, `PauliEvolutionGate`) and the qiskit-ionq provider docs.
+
+- Kyte, J. & Doolittle, R. F. (1982). A simple method for displaying the hydropathic character of a protein. _J. Mol. Biol._ 157(1):105-132. PMID 7108955.
 
 ## Team
 
