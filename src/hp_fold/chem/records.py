@@ -19,7 +19,7 @@ class ChainRecord:
     Residues are ordered by `ResidueRecord.seq_id`.
     """
 
-    structures_id: str
+    structure_id: str
     chain_id: str
     residues: tuple[ResidueRecord, ...]
 
