@@ -57,7 +57,7 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 **Tasks**
 
-- [ ] A: create repo layout from the README, setup `uv`, `.gitignore`.
+- [x] A: create repo layout from the README, setup `uv`, `.gitignore`.
 - [ ] A: search and download molecule datasets.
 - [ ] B: verify the IonQ API key works, list the available backends (simulator, noise models, QPU), find qubit limits, job queue behavior, **and the credit/shot budget**.
 - [ ] B: find qubit limits, job queue behavior, **and the credit/shot budget**.
