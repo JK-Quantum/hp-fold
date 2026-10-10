@@ -62,7 +62,7 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 - [ ] B: verify the IonQ API key works, list the available backends (simulator, noise models, QPU).
 - [ ] B: find qubit limits, job queue behavior and the credit/shot budget.
 - [ ] B: submit one trivial 2-qubit circuit to the IonQ simulator through Qiskit to prove the path end to end.
-- [ ] Both: agree on the interface above and the bit-ordering convention.
+- [x] Both: agree on the interface above and the bit-ordering convention.
 
 **Deliverable:** repo pushed, both devs can run `pytest` and one IonQ simulator job.
 
@@ -76,7 +76,7 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 - [x] A: extract contact capable windows from H/P strings.
 
-- [ ] A: `problem.py`: decoder, energy (contacts + overlap penalty), tabulated cost vector, `valid` mask, ground states. Assert the optimum is valid.
+- [x] A: `problem.py`: decoder, energy (contacts + overlap penalty), tabulated cost vector, `valid` mask, ground states. Assert the optimum is valid.
 
 - [ ] A: `classical.py`: brute force (trivial from the cost vector), simulated annealing on bitstrings, uniform random sampling baseline.
 
