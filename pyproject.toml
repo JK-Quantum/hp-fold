@@ -29,6 +29,7 @@ dev = ["pre-commit>=4.6.2", "pyright>=1.1.414", "pytest>=9.1.1", "ruff>=0.17.0"]
 [tool.ruff]
 line-length = 88
 target-version = "py314"
+extend-exclude = ["data"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "N", "UP"]
@@ -44,7 +45,7 @@ quote-style = "double"
 indent-style = "space"
 
 [tool.pyright]
-exclude = [".venv"]
+exclude = [".venv", "data"]
 pythonVersion = "3.14"
 venvPath = "."
 venv = ".venv"
