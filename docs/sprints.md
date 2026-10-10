@@ -59,8 +59,8 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 - [x] A: create repo layout from the README, setup `uv`, `.gitignore`.
 - [x] A: search and download molecule datasets.
-- [ ] B: verify the IonQ API key works, list the available backends (simulator, noise models, QPU), find qubit limits, job queue behavior, **and the credit/shot budget**.
-- [ ] B: find qubit limits, job queue behavior, **and the credit/shot budget**.
+- [ ] B: verify the IonQ API key works, list the available backends (simulator, noise models, QPU).
+- [ ] B: find qubit limits, job queue behavior and the credit/shot budget.
 - [ ] B: submit one trivial 2-qubit circuit to the IonQ simulator through Qiskit to prove the path end to end.
 - [ ] Both: agree on the interface above and the bit-ordering convention.
 
@@ -69,6 +69,12 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 ## Sprint 1: Core + baselines (2.5 h)
 
 **Tasks**
+
+- [x] A: load mmCIF into CA-only chain records.
+
+- [x] A: convert chains to one-letter sequences and H/P strings, with a Kyte-Doolittle check.
+
+- [x] A: extract contact capable windows from H/P strings.
 
 - [ ] A: `problem.py`: decoder, energy (contacts + overlap penalty), tabulated cost vector, `valid` mask, ground states. Assert the optimum is valid.
 
