@@ -78,9 +78,9 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 - [x] A: `problem.py`: decoder, energy (contacts + overlap penalty), tabulated cost vector, `valid` mask, ground states. Assert the optimum is valid.
 
-- [ ] A: `classical.py`: brute force (trivial from the cost vector), simulated annealing on bitstrings, uniform random sampling baseline.
+- [x] A: `classical.py`: brute force (trivial from the cost vector), simulated annealing on bitstrings, uniform random sampling baseline.
 
-- [ ] A: tests: a hand-checked `HPPH` fold has $E=-1$, a straight chain has $E=0$, symmetry degeneracy counted correctly. Add one or two published HP benchmark energies if you can find them quickly.
+- [x] A: tests: a hand-checked `HPPH` fold has $E=-1$, a straight chain has $E=0$, symmetry degeneracy counted correctly. Add one or two published HP benchmark energies if you can find them quickly.
 
 - [ ] B: NumPy QAOA statevector (diagonal phase layer + X mixer), expectation and CVaR objectives, COBYLA with restarts. This is the fast reference implementation and the debugging oracle for the Qiskit version.
 
