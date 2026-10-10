@@ -1,7 +1,7 @@
 [project]
 name = "hp-fold"
 version = "0.1.0"
-description = "Add your description here"
+description = "Quantum Algorithms for Lattice Protein Folding."
 readme = "README.md"
 authors = [
     { name = "Kaue Miziara", email = "kauemiziara@gmail.com" },
@@ -24,4 +24,27 @@ requires = ["uv_build>=0.9.22,<0.10.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = ["pytest>=9.1.1"]
+dev = ["pre-commit>=4.6.2", "pyright>=1.1.414", "pytest>=9.1.1", "ruff>=0.17.0"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "N", "UP"]
+
+ignore = ["E741", "N806"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"scripts/*.py" = ["T201"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pyright]
+exclude = [".venv"]
+pythonVersion = "3.14"
+venvPath = "."
+venv = ".venv"
