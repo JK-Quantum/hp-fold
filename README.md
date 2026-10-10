@@ -16,7 +16,7 @@ If time permits, we'll run the best candidate on **IonQ** and benchmark how nois
 
 - **HP model:** residues are `H` or `P`; the chain is a self-avoiding walk on a lattice; `energy = -(number of H-H contacts between residues that are lattice neighbors but not chain neighbors)`.
 
-- **Parity rule:** on a square lattice, residues `i` and `j` can only touch if `|i-j|` is odd, so contacts need $|i-j| >= 3$.
+- **Parity rule:** on a square lattice, residues `i` and `j` can only touch if `|i-j|` is odd, so contacts need $|i-j| \geq 3$.
 
 - **Designability:** a protein-like sequence has a _unique_ ground-state fold. Scanning sequences for uniqueness is cheap and scientifically meaningful.
 
@@ -24,11 +24,11 @@ If time permits, we'll run the best candidate on **IonQ** and benchmark how nois
 
 ## Encoding
 
-- Each bond direction in $\{+x, +y, -x, -y\}$ is 2 bits. The first bond is fixed to $+x$ (removes rotational symmetry).
+- Each bond direction in ${+x, +y, -x, -y}$ is 2 bits. The first bond is fixed to $+x$ (removes rotational symmetry).
 
 - N residues need $2(N-2)$ qubits.
 
-- Cost: $E(x) = -(HH \text{ contacts}) + \lambda * (overlaps)$, with $\lambda$ large enough that the optimum is always a valid fold.
+- Cost: $E(x) = -(HH \text{ contacts}) + \lambda \cdot (overlaps)$, with $\lambda$ large enough that the optimum is always a valid fold.
 
 - For simulation, we tabulate the cost for all $2^n$ bitstrings. For hardware, we'll expand it into Pauli-Z terms (Walsh-Hadamard transform?, to be pondered) and build the Qiskit operator from that.
 
@@ -67,13 +67,10 @@ It's likely that not every algorithm will be finished. See `docs/sprints.md` for
 
 ## Quickstart
 
-> TODO: update to `uv`
-
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install numpy scipy matplotlib qiskit qiskit-aer qiskit-ionq biopython pytest
-pytest -q
-python scripts/hello_world.py  # N=6 end-to-end
+uv sync
+uv run pytest -q
+uv run scripts/hello_world.py  # N=6 end-to-end
 ```
 
 ## Planned experiments
@@ -129,6 +126,7 @@ python scripts/hello_world.py  # N=6 end-to-end
 
 ## Team
 
-Two developers. Roles and tasks are in `docs/sprints.md`.
+- Kauê Miziara
+- Júlia Santos
 
 > TODO: add names and links
