@@ -450,6 +450,7 @@ dependencies = [
     { name = "qiskit-aer" },
     { name = "qiskit-ibm-runtime" },
     { name = "qiskit-ionq" },
+    { name = "scipy" },
 ]
 
 [package.dev-dependencies]
@@ -470,6 +471,7 @@ requires-dist = [
     { name = "qiskit-aer", specifier = ">=0.17.2" },
     { name = "qiskit-ibm-runtime", specifier = ">=0.50.0" },
     { name = "qiskit-ionq", specifier = ">=1.1.1" },
+    { name = "scipy", specifier = ">=1.18.1" },
 ]
 
 [package.metadata.requires-dev]
