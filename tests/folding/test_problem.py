@@ -2,8 +2,8 @@ import itertools
 
 import pytest
 
-from hp_fold.lattice import x_of
-from hp_fold.problem import HPProblem, default_penalty
+from hp_fold.folding.lattice import x_of
+from hp_fold.folding.problem import HPProblem, default_penalty
 
 
 def test_contract_attributes_of_the_worked_example():

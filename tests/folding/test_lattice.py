@@ -1,6 +1,6 @@
 import pytest
 
-from hp_fold.lattice import fold_of, n_qubits, positions, x_of
+from hp_fold.folding.lattice import fold_of, n_qubits, positions, x_of
 
 
 @pytest.mark.parametrize(("n_residues", "expected"), [(3, 2), (4, 4), (5, 6), (10, 16)])

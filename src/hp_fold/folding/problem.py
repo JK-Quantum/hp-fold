@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from hp_fold import lattice
-from hp_fold.energy import count_overlaps, energy
+from hp_fold.folding import lattice
+from hp_fold.folding.energy import count_overlaps, energy
 
 
 def default_penalty(n_residues: int) -> float:

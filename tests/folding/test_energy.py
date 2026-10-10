@@ -1,6 +1,6 @@
 import pytest
 
-from hp_fold.energy import count_contacts, count_overlaps, energy
+from hp_fold.folding.energy import count_contacts, count_overlaps, energy
 
 
 def test_square_hairpin_has_one_contact():

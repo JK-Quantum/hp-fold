@@ -8,7 +8,7 @@ along the chain (Dill, 1985).
 
 import numpy as np
 
-from hp_fold.lattice import positions
+from hp_fold.folding.lattice import positions
 
 
 def _check(hp: str, fold: str) -> None:
