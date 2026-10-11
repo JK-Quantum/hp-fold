@@ -83,7 +83,7 @@ _SLOT_OF = {
     "qaoa": 2,
     "qaoa_cvar": 3,
     "vqe": 4,
-    "qaoa_noisy": 5,
+    "qaoa_noisy": 6,
 }
 _KNOWN_LONGEST_FIRST = sorted(_SLOT_OF, key=len, reverse=True)
 
