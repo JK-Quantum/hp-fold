@@ -31,9 +31,11 @@ def depth_of(result: RunResult) -> int | None:
 
 
 def label_of(result: RunResult) -> str:
-    """Panel/legend name: the algorithm, plus the depth when the run has one."""
+    """Panel/legend name: the algorithm, plus the depth and CVaR level when set."""
     depth = depth_of(result)
-    return result.algorithm if depth is None else f"{result.algorithm}, p = {depth}"
+    label = result.algorithm if depth is None else f"{result.algorithm}, p = {depth}"
+    alpha = result.config.get("cvar_alpha")
+    return label if alpha is None else f"{label}, alpha = {alpha}"
 
 
 def newest_per_config(results: Sequence[RunResult]) -> list[RunResult]:

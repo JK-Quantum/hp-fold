@@ -77,7 +77,14 @@ def get_theme(name: str) -> Theme:
         ) from None
 
 
-_SLOT_OF = {"random": 0, "annealing": 1, "qaoa": 2, "qaoa_cvar": 3, "vqe": 4}
+_SLOT_OF = {
+    "random": 0,
+    "annealing": 1,
+    "qaoa": 2,
+    "qaoa_cvar": 3,
+    "vqe": 4,
+    "qaoa_noisy": 5,
+}
 _KNOWN_LONGEST_FIRST = sorted(_SLOT_OF, key=len, reverse=True)
 
 

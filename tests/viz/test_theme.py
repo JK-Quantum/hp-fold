@@ -77,8 +77,8 @@ def test_there_are_eight_distinct_series_colors_led_by_the_accent_and_alert(name
 
 def test_the_known_algorithms_get_different_colors():
     theme = get_theme("dark")
-    names = ["random", "annealing", "qaoa", "qaoa_cvar", "vqe"]
-    assert len(set(algorithm_colors(theme, names).values())) == 5
+    names = ["random", "annealing", "qaoa", "qaoa_cvar", "vqe", "qaoa_noisy"]
+    assert len(set(algorithm_colors(theme, names).values())) == 6
 
 
 def test_algorithms_not_known_in_advance_still_get_distinct_colors():
