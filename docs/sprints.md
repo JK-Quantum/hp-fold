@@ -108,7 +108,7 @@ Priority order. Stop adding algorithms when the clock says so.
 
 - [x] A: `metrics.py`: P(ground state), P(valid fold), approximation ratio, best-sampled energy, success versus number of shots.
 
-- [ ] A: `scripts/run_experiment.py`: config-driven runner (algorithm, N, p, seed) writing JSON to `results/`. Deterministic seeds.
+- [x] A: `scripts/run_experiment.py`: config-driven runner (algorithm, N, p, seed) writing JSON to `results/`. Deterministic seeds.
 
 - [ ] A: `viz.py`: fold picture, P(GS) vs p, bitstring probability histogram colored by validity.
 
