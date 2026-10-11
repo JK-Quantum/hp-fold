@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 
 from hp_fold import HPProblem
-from hp_fold.analysis.metrics import compute_metrics
+from hp_fold.analysis.metrics import compute_metrics, success_vs_shots
 from hp_fold.analysis.result import RunResult
 from hp_fold.baselines.annealing import SimulatedAnnealing
 from hp_fold.baselines.base import Sampler
@@ -128,12 +128,11 @@ def main() -> None:
     results = run_baselines(problem, args.samples, args.seed)
     print_table(problem, results)
 
-    exact = results[0]
-    k = SimulatedAnnealing().evaluations_per_sample
-    p0 = compute_metrics(problem, exact).p_ground
+    budget = SimulatedAnnealing().evaluations_per_sample
+    p_hit = success_vs_shots(problem, results[0], [1, budget])
     print(
-        f"\nrandom reference: P(ground)={p0:.3f} per draw; "
-        f"{1 - (1 - p0) ** k:.3f} with the {k} draws one annealing run costs"
+        f"\nrandom guessing finds a ground state with probability {p_hit[0]:.3f} in 1 "
+        f"draw and {p_hit[1]:.3f} in {budget} draws (the cost of one annealing run)"
     )
 
 
