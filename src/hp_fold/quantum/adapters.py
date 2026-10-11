@@ -11,7 +11,7 @@ import numpy as np
 from hp_fold.analysis.result import RunResult
 from hp_fold.folding.problem import HPProblem
 from hp_fold.quantum.experiment import BACKENDS
-from hp_fold.quantum.objectives import ExpectationObjective
+from hp_fold.quantum.objectives import CVaRObjective, ExpectationObjective
 from hp_fold.quantum.optimize import minimize_with_restarts
 
 _DEFAULTS: dict[str, Any] = {
@@ -24,11 +24,33 @@ _DEFAULTS: dict[str, Any] = {
 
 def run_qaoa(problem: HPProblem, params: Mapping[str, Any], seed: int) -> RunResult:
     """QAOA of depth `p`, trained on <C>; probs are empirical from `shots` samples."""
-    options = _validated("qaoa", params)
+    return _run("qaoa", problem, params, seed, cvar=False)
+
+
+def run_qaoa_cvar(
+    problem: HPProblem, params: Mapping[str, Any], seed: int
+) -> RunResult:
+    """QAOA of depth `p`, trained on CVaR at level `cvar_alpha`."""
+    return _run("qaoa_cvar", problem, params, seed, cvar=True)
+
+
+def _run(
+    name: str,
+    problem: HPProblem,
+    params: Mapping[str, Any],
+    seed: int,
+    cvar: bool,
+) -> RunResult:
+    options = _validated(name, params, cvar)
     circuit = BACKENDS[options["backend"]](problem, options["p"])
+    objective = (
+        CVaRObjective(circuit, options["cvar_alpha"])
+        if cvar
+        else ExpectationObjective(circuit)
+    )
     rng = np.random.default_rng(seed)
     best = minimize_with_restarts(
-        ExpectationObjective(circuit),
+        objective,
         restarts=options["restarts"],
         rng=rng,
         maxiter=options["maxiter"],
@@ -36,7 +58,7 @@ def run_qaoa(problem: HPProblem, params: Mapping[str, Any], seed: int) -> RunRes
     xs = circuit.sample(best.params, options["shots"], rng)
     gammas, betas = circuit.split_params(best.params)
     return RunResult.from_samples(
-        "qaoa",
+        name,
         problem,
         xs,
         evaluations=best.n_evaluations + options["shots"],
@@ -52,14 +74,22 @@ def run_qaoa(problem: HPProblem, params: Mapping[str, Any], seed: int) -> RunRes
     )
 
 
-def _validated(name: str, params: Mapping[str, Any]) -> dict[str, Any]:
+def _validated(name: str, params: Mapping[str, Any], cvar: bool) -> dict[str, Any]:
     """The params with defaults filled in; unknown or invalid ones raise ValueError."""
-    unknown = sorted(set(params) - {"p"} - set(_DEFAULTS))
+    required = ("p", "cvar_alpha") if cvar else ("p",)
+    unknown = sorted(set(params) - set(required) - set(_DEFAULTS))
     if unknown:
         raise ValueError(f"{name}: unknown param(s) {', '.join(unknown)}")
-    if "p" not in params:
-        raise ValueError(f"{name}: missing param 'p'")
+    for key in required:
+        if key not in params:
+            raise ValueError(f"{name}: missing param {key!r}")
     options = {**_DEFAULTS, **params}
+    if cvar:
+        alpha = options["cvar_alpha"]
+        if isinstance(alpha, bool) or not isinstance(alpha, int | float):
+            raise ValueError(f"{name}: cvar_alpha must be a number, got {alpha!r}")
+        if not 0.0 < alpha <= 1.0:
+            raise ValueError(f"{name}: cvar_alpha must be in (0, 1], got {alpha!r}")
     for key in ("p", "restarts", "maxiter", "shots"):
         value = options[key]
         if isinstance(value, bool) or not isinstance(value, int) or value < 1:
