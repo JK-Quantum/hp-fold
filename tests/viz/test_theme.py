@@ -1,6 +1,6 @@
 import pytest
 
-from hp_fold.viz.theme import THEMES, get_theme
+from hp_fold.viz.theme import THEMES, algorithm_colors, get_theme
 
 
 def luminance(hex_color: str) -> float:
@@ -50,3 +50,45 @@ def test_primary_and_secondary_text_are_readable(name):
 def test_the_three_mark_roles_are_distinct(name):
     theme = get_theme(name)
     assert len({theme.accent, theme.neutral, theme.alert}) == 3
+
+
+@pytest.mark.parametrize("name", ["light", "dark"])
+def test_series_colors_stay_visible_on_the_surface(name):
+    theme = get_theme(name)
+    assert all(contrast(color, theme.surface) >= 2.0 for color in theme.series)
+
+
+@pytest.mark.parametrize(
+    "spelling", ["qaoa_cvar", "QAOA-CVaR", "qaoa cvar", "qaoa_cvar_p2"]
+)
+def test_algorithm_names_are_matched_loosely_and_cvar_is_not_plain_qaoa(spelling):
+    theme = get_theme("light")
+    colors = algorithm_colors(theme, [spelling, "qaoa"])
+    assert colors[spelling] == theme.series[3]
+    assert colors["qaoa"] == theme.series[2]
+
+
+@pytest.mark.parametrize("name", ["light", "dark"])
+def test_there_are_eight_distinct_series_colors_led_by_the_accent_and_alert(name):
+    theme = get_theme(name)
+    assert len(theme.series) == 8 and len(set(theme.series)) == 8
+    assert theme.series[0] == theme.accent and theme.series[1] == theme.alert
+
+
+def test_the_known_algorithms_get_different_colors():
+    theme = get_theme("dark")
+    names = ["random", "annealing", "qaoa", "qaoa_cvar", "vqe"]
+    assert len(set(algorithm_colors(theme, names).values())) == 5
+
+
+def test_algorithms_not_known_in_advance_still_get_distinct_colors():
+    theme = get_theme("light")
+    names = ["random", "qaoa", "vqe", "grover", "qpe", "my_new_algorithm"]
+    colors = algorithm_colors(theme, names)
+    assert len(set(colors.values())) == len(names)
+
+
+def test_more_algorithms_than_colors_is_an_error():
+    names = [f"algorithm_{i}" for i in range(9)]
+    with pytest.raises(ValueError, match="at most 8"):
+        algorithm_colors(get_theme("light"), names)
