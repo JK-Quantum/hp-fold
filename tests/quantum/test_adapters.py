@@ -4,7 +4,7 @@ import pytest
 from hp_fold import HPProblem
 from hp_fold.analysis.store import load_result, save_result
 from hp_fold.experiments.algorithms import resolve
-from hp_fold.quantum.adapters import run_qaoa, run_qaoa_cvar
+from hp_fold.quantum.adapters import run_qaoa, run_qaoa_cvar, run_qaoa_noisy
 from hp_fold.viz.report import landscape_of
 
 FAST = {"p": 1, "restarts": 1, "maxiter": 15, "shots": 64}
@@ -30,6 +30,33 @@ def test_qaoa_result_follows_the_standard_and_survives_saving(problem, tmp_path)
 
     loaded = load_result(save_result(problem, result, tmp_path))
     assert np.array_equal(loaded.probs, result.probs)
+
+
+def test_noisy_result_is_distinct_deterministic_and_counts_its_budget(problem):
+    params = {**FAST, "error_2q": 0.05}
+    a = run_qaoa_noisy(problem, params, seed=3)
+    b = run_qaoa_noisy(problem, params, seed=3)
+    assert resolve("qaoa_noisy") is run_qaoa_noisy
+    assert a.algorithm == "qaoa_noisy"
+    assert a.shots == 64
+    assert a.evaluations == a.extras["training_evaluations"] + 64
+    assert a.extras["circuit_depth"] > 0
+    assert a.extras["two_qubit_gates"] > 0
+    assert np.array_equal(a.probs, b.probs)
+
+
+@pytest.mark.parametrize(
+    "params, message",
+    [
+        ({**FAST, "error_2q": 1.5}, "error_2q must be in"),
+        ({**FAST, "readout_error": "x"}, "readout_error must be a number"),
+        ({**FAST, "backend": "numpy"}, "unknown param.*backend"),
+        ({**FAST, "landscape_grid": 5}, "unknown param.*landscape_grid"),
+    ],
+)
+def test_noisy_rejects_bad_params(problem, params, message):
+    with pytest.raises(ValueError, match=message):
+        run_qaoa_noisy(problem, params, seed=0)
 
 
 def test_landscape_grid_adds_the_landscape_extras_the_plot_reads(problem):

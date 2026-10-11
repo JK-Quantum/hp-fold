@@ -16,7 +16,7 @@ from hp_fold.baselines.annealing import SimulatedAnnealing
 from hp_fold.baselines.base import Sampler
 from hp_fold.baselines.random_sampling import RandomSampler
 from hp_fold.folding.problem import HPProblem
-from hp_fold.quantum.adapters import run_qaoa, run_qaoa_cvar
+from hp_fold.quantum.adapters import run_qaoa, run_qaoa_cvar, run_qaoa_noisy
 
 Runner = Callable[[HPProblem, Mapping[str, Any], int], RunResult]
 
@@ -48,6 +48,7 @@ BUILTINS: dict[str, Runner] = {
     "annealing": run_annealing,
     "qaoa": run_qaoa,
     "qaoa_cvar": run_qaoa_cvar,
+    "qaoa_noisy": run_qaoa_noisy,
 }
 
 
