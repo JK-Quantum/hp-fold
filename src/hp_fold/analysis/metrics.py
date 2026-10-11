@@ -22,7 +22,7 @@ class Metrics:
     approx_ratio: float
 
 
-def _check_compatible(problem: HPProblem, result: RunResult) -> None:
+def check_compatible(problem: HPProblem, result: RunResult) -> None:
     if result.seq != problem.seq:
         raise ValueError(f"result is for {result.seq!r}, problem is {problem.seq!r}")
     if result.probs.size != problem.cost.size:
@@ -36,7 +36,7 @@ def _p_ground(problem: HPProblem, result: RunResult) -> float:
 
 
 def compute_metrics(problem: HPProblem, result: RunResult) -> Metrics:
-    _check_compatible(problem, result)
+    check_compatible(problem, result)
     probs = result.probs
     p_valid = float(probs[problem.valid].sum())
     if p_valid > 0:
@@ -65,7 +65,7 @@ def success_vs_shots(
 
     Treats result.probs as the distribution of a single draw, so it is exact.
     """
-    _check_compatible(problem, result)
+    check_compatible(problem, result)
     k = np.asarray(shots)
     if k.size and (k.min() < 1 or not np.issubdtype(k.dtype, np.integer)):
         raise ValueError("shots must be positive integers")
