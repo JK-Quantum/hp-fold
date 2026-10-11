@@ -102,19 +102,9 @@ def latest_runs(directory: str | Path) -> list[Path]:
     ordered by when each algorithm first ran. Age comes from the `created_at` stored in
     each file, not from the file name.
     """
-    records = [(path, _read_record(path)) for path in Path(directory).glob("*.json")]
-    if not records:
-        raise ValueError(f"no saved runs in {directory}")
-    records.sort(key=lambda item: item[1]["created_at"])
-
-    def problem_key(record: dict[str, Any]) -> tuple[str, float]:
-        return record["problem"]["seq"], record["problem"]["penalty"]
-
-    newest = problem_key(records[-1][1])
     latest: dict[str, Path] = {}
-    for path, record in records:
-        if problem_key(record) == newest:
-            latest[record["result"]["algorithm"]] = path
+    for path in problem_runs(directory):
+        latest[_read_record(path)["result"]["algorithm"]] = path
     return list(latest.values())
 
 
@@ -191,3 +181,21 @@ def _provenance() -> dict[str, Any]:
         "python": sys.version.split()[0],
         "packages": {name: _version(name) for name in _PACKAGES},
     }
+
+
+def problem_runs(directory: str | Path) -> list[Path]:
+    """Every run of the most recent problem, oldest first.
+
+    "Problem" means (sequence, penalty), so the returned runs are comparable.
+    Age comes from `created_at` stored in each file, not from the file name.
+    """
+    records = [(path, _read_record(path)) for path in Path(directory).glob("*.json")]
+    if not records:
+        raise ValueError(f"no saved runs in {directory}")
+    records.sort(key=lambda item: item[1]["created_at"])
+    newest = _problem_key(records[-1][1])
+    return [path for path, record in records if _problem_key(record) == newest]
+
+
+def _problem_key(record: dict[str, Any]) -> tuple[str, float]:
+    return record["problem"]["seq"], record["problem"]["penalty"]

@@ -1,327 +1,327 @@
 algorithm,evaluations,p_success
-random (seed 4),1,0.035
-random (seed 4),2,0.068775
-random (seed 4),3,0.101367875
-random (seed 4),4,0.1328199994
-random (seed 4),5,0.1631712994
-random (seed 4),6,0.1924603039
-random (seed 4),7,0.2207241933
-random (seed 4),8,0.2479988465
-random (seed 4),9,0.2743188869
-random (seed 4),10,0.2997177258
-random (seed 4),11,0.3242276054
-random (seed 4),12,0.3478796393
-random (seed 4),13,0.3707038519
-random (seed 4),14,0.3927292171
-random (seed 4),15,0.4139836945
-random (seed 4),16,0.4344942652
-random (seed 4),17,0.4542869659
-random (seed 4),18,0.4733869221
-random (seed 4),19,0.4918183798
-random (seed 4),20,0.5096047365
-random (seed 4),21,0.5267685707
-random (seed 4),22,0.5433316708
-random (seed 4),23,0.5593150623
-random (seed 4),24,0.5747390351
-random (seed 4),26,0.603986358
-random (seed 4),27,0.6178468354
-random (seed 4),29,0.6441294193
-random (seed 4),30,0.6565848896
-random (seed 4),32,0.6802032639
-random (seed 4),34,0.7021972844
-random (seed 4),35,0.7126203794
-random (seed 4),37,0.7323849128
-random (seed 4),39,0.7507901405
-random (seed 4),42,0.7760520144
-random (seed 4),44,0.7914540371
-random (seed 4),46,0.8057967857
-random (seed 4),49,0.8254827528
-random (seed 4),52,0.8431731953
-random (seed 4),54,0.8539589588
-random (seed 4),57,0.8687628288
-random (seed 4),60,0.882066062
-random (seed 4),64,0.8977300476
-random (seed 4),67,0.9080969353
-random (seed 4),71,0.9203035003
-random (seed 4),75,0.9308887893
-random (seed 4),79,0.9400681403
-random (seed 4),83,0.9480282899
-random (seed 4),88,0.9565085813
-random (seed 4),93,0.9636051326
-random (seed 4),98,0.9695437304
-random (seed 4),103,0.9745133195
-random (seed 4),109,0.9794184938
-random (seed 4),115,0.9833796167
-random (seed 4),121,0.9865783807
-random (seed 4),127,0.9891615097
-random (seed 4),134,0.9915538267
-random (seed 4),142,0.9936484679
-random (seed 4),150,0.9952236406
-random (seed 4),158,0.9964081722
-random (seed 4),166,0.9972989413
-random (seed 4),175,0.9980398927
-random (seed 4),185,0.9986273716
-random (seed 4),195,0.9990387727
-random (seed 4),206,0.9993504291
-random (seed 4),217,0.9995610379
-random (seed 4),229,0.9997137439
-random (seed 4),242,0.9998198601
-random (seed 4),255,0.9998866387
-random (seed 4),269,0.999931159
-random (seed 4),283,0.9999581949
-random (seed 4),299,0.999976359
-random (seed 4),315,0.9999866309
-random (seed 4),333,0.9999929596
-random (seed 4),351,0.9999962925
-random (seed 4),370,0.9999981159
-random (seed 4),390,0.999999076
-random (seed 4),412,0.9999995781
-random (seed 4),434,0.9999998073
-random (seed 4),458,0.9999999181
-random (seed 4),483,0.9999999664
-random (seed 4),509,0.9999999867
-random (seed 4),537,0.9999999951
-random (seed 4),567,0.9999999983
-random (seed 4),598,0.9999999994
-random (seed 4),630,0.9999999998
-random (seed 4),665,0.9999999999
-random (seed 4),701,1.0
-random (seed 4),740,1.0
-random (seed 4),780,1.0
-random (seed 4),823,1.0
-random (seed 4),868,1.0
-random (seed 4),915,1.0
-random (seed 4),965,1.0
-random (seed 4),1018,1.0
-random (seed 4),1074,1.0
-random (seed 4),1133,1.0
-random (seed 4),1195,1.0
-random (seed 4),1260,1.0
-random (seed 4),1329,1.0
-random (seed 4),1402,1.0
-random (seed 4),1478,1.0
-random (seed 4),1559,1.0
-random (seed 4),1644,1.0
-random (seed 4),1734,1.0
-random (seed 4),1829,1.0
-random (seed 4),1929,1.0
-random (seed 4),2035,1.0
-random (seed 4),2146,1.0
-random (seed 4),2264,1.0
-random (seed 4),2388,1.0
-random (seed 4),2518,1.0
-random (seed 4),2656,1.0
-random (seed 4),2801,1.0
-random (seed 4),2955,1.0
-random (seed 4),3116,1.0
-random (seed 4),3287,1.0
-random (seed 4),3467,1.0
-random (seed 4),3657,1.0
-random (seed 4),3857,1.0
-random (seed 4),4068,1.0
-random (seed 4),4290,1.0
-random (seed 4),4525,1.0
-random (seed 4),4773,1.0
-random (seed 4),5034,1.0
-random (seed 4),5309,1.0
-random (seed 4),5600,1.0
-random (seed 4),5906,1.0
-random (seed 4),6229,1.0
-random (seed 4),6570,1.0
-random (seed 4),6930,1.0
-random (seed 4),7309,1.0
-random (seed 4),7709,1.0
-random (seed 4),8131,1.0
-random (seed 4),8575,1.0
-random (seed 4),9045,1.0
-random (seed 4),9540,1.0
-random (seed 4),10062,1.0
-random (seed 4),10612,1.0
-random (seed 4),11193,1.0
-random (seed 4),11805,1.0
-random (seed 4),12451,1.0
-random (seed 4),13133,1.0
-random (seed 4),13851,1.0
-random (seed 4),14609,1.0
-random (seed 4),15409,1.0
-random (seed 4),16252,1.0
-random (seed 4),17141,1.0
-random (seed 4),18079,1.0
-random (seed 4),19068,1.0
-random (seed 4),20112,1.0
-random (seed 4),21212,1.0
-random (seed 4),22373,1.0
-random (seed 4),23597,1.0
-random (seed 4),24888,1.0
-random (seed 4),26250,1.0
-random (seed 4),27687,1.0
-random (seed 4),29202,1.0
-random (seed 4),30799,1.0
-random (seed 4),32485,1.0
-random (seed 4),34262,1.0
-random (seed 4),36137,1.0
-random (seed 4),38114,1.0
-random (seed 4),40200,1.0
-annealing (seed 4),1,0.0
-annealing (seed 4),2,0.0
-annealing (seed 4),3,0.0
-annealing (seed 4),4,0.0
-annealing (seed 4),5,0.0
-annealing (seed 4),6,0.0
-annealing (seed 4),7,0.0
-annealing (seed 4),8,0.0
-annealing (seed 4),9,0.0
-annealing (seed 4),10,0.0
-annealing (seed 4),11,0.0
-annealing (seed 4),12,0.0
-annealing (seed 4),13,0.0
-annealing (seed 4),14,0.0
-annealing (seed 4),15,0.0
-annealing (seed 4),16,0.0
-annealing (seed 4),17,0.0
-annealing (seed 4),18,0.0
-annealing (seed 4),19,0.0
-annealing (seed 4),20,0.0
-annealing (seed 4),21,0.0
-annealing (seed 4),22,0.0
-annealing (seed 4),23,0.0
-annealing (seed 4),24,0.0
-annealing (seed 4),26,0.0
-annealing (seed 4),27,0.0
-annealing (seed 4),29,0.0
-annealing (seed 4),30,0.0
-annealing (seed 4),32,0.0
-annealing (seed 4),34,0.0
-annealing (seed 4),35,0.0
-annealing (seed 4),37,0.0
-annealing (seed 4),39,0.0
-annealing (seed 4),42,0.0
-annealing (seed 4),44,0.0
-annealing (seed 4),46,0.0
-annealing (seed 4),49,0.0
-annealing (seed 4),52,0.0
-annealing (seed 4),54,0.0
-annealing (seed 4),57,0.0
-annealing (seed 4),60,0.0
-annealing (seed 4),64,0.0
-annealing (seed 4),67,0.0
-annealing (seed 4),71,0.0
-annealing (seed 4),75,0.0
-annealing (seed 4),79,0.0
-annealing (seed 4),83,0.0
-annealing (seed 4),88,0.0
-annealing (seed 4),93,0.0
-annealing (seed 4),98,0.0
-annealing (seed 4),103,0.0
-annealing (seed 4),109,0.0
-annealing (seed 4),115,0.0
-annealing (seed 4),121,0.0
-annealing (seed 4),127,0.0
-annealing (seed 4),134,0.0
-annealing (seed 4),142,0.0
-annealing (seed 4),150,0.0
-annealing (seed 4),158,0.0
-annealing (seed 4),166,0.0
-annealing (seed 4),175,0.0
-annealing (seed 4),185,0.0
-annealing (seed 4),195,0.0
-annealing (seed 4),206,0.795
-annealing (seed 4),217,0.795
-annealing (seed 4),229,0.795
-annealing (seed 4),242,0.795
-annealing (seed 4),255,0.795
-annealing (seed 4),269,0.795
-annealing (seed 4),283,0.795
-annealing (seed 4),299,0.795
-annealing (seed 4),315,0.795
-annealing (seed 4),333,0.795
-annealing (seed 4),351,0.795
-annealing (seed 4),370,0.795
-annealing (seed 4),390,0.795
-annealing (seed 4),412,0.957975
-annealing (seed 4),434,0.957975
-annealing (seed 4),458,0.957975
-annealing (seed 4),483,0.957975
-annealing (seed 4),509,0.957975
-annealing (seed 4),537,0.957975
-annealing (seed 4),567,0.957975
-annealing (seed 4),598,0.957975
-annealing (seed 4),630,0.991384875
-annealing (seed 4),665,0.991384875
-annealing (seed 4),701,0.991384875
-annealing (seed 4),740,0.991384875
-annealing (seed 4),780,0.991384875
-annealing (seed 4),823,0.9982338994
-annealing (seed 4),868,0.9982338994
-annealing (seed 4),915,0.9982338994
-annealing (seed 4),965,0.9982338994
-annealing (seed 4),1018,0.9996379494
-annealing (seed 4),1074,0.9996379494
-annealing (seed 4),1133,0.9996379494
-annealing (seed 4),1195,0.9996379494
-annealing (seed 4),1260,0.9999257796
-annealing (seed 4),1329,0.9999257796
-annealing (seed 4),1402,0.9999257796
-annealing (seed 4),1478,0.9999847848
-annealing (seed 4),1559,0.9999847848
-annealing (seed 4),1644,0.9999968809
-annealing (seed 4),1734,0.9999968809
-annealing (seed 4),1829,0.9999993606
-annealing (seed 4),1929,0.9999993606
-annealing (seed 4),2035,0.9999998689
-annealing (seed 4),2146,0.9999998689
-annealing (seed 4),2264,0.9999999731
-annealing (seed 4),2388,0.9999999731
-annealing (seed 4),2518,0.9999999945
-annealing (seed 4),2656,0.9999999989
-annealing (seed 4),2801,0.9999999989
-annealing (seed 4),2955,0.9999999998
-annealing (seed 4),3116,1.0
-annealing (seed 4),3287,1.0
-annealing (seed 4),3467,1.0
-annealing (seed 4),3657,1.0
-annealing (seed 4),3857,1.0
-annealing (seed 4),4068,1.0
-annealing (seed 4),4290,1.0
-annealing (seed 4),4525,1.0
-annealing (seed 4),4773,1.0
-annealing (seed 4),5034,1.0
-annealing (seed 4),5309,1.0
-annealing (seed 4),5600,1.0
-annealing (seed 4),5906,1.0
-annealing (seed 4),6229,1.0
-annealing (seed 4),6570,1.0
-annealing (seed 4),6930,1.0
-annealing (seed 4),7309,1.0
-annealing (seed 4),7709,1.0
-annealing (seed 4),8131,1.0
-annealing (seed 4),8575,1.0
-annealing (seed 4),9045,1.0
-annealing (seed 4),9540,1.0
-annealing (seed 4),10062,1.0
-annealing (seed 4),10612,1.0
-annealing (seed 4),11193,1.0
-annealing (seed 4),11805,1.0
-annealing (seed 4),12451,1.0
-annealing (seed 4),13133,1.0
-annealing (seed 4),13851,1.0
-annealing (seed 4),14609,1.0
-annealing (seed 4),15409,1.0
-annealing (seed 4),16252,1.0
-annealing (seed 4),17141,1.0
-annealing (seed 4),18079,1.0
-annealing (seed 4),19068,1.0
-annealing (seed 4),20112,1.0
-annealing (seed 4),21212,1.0
-annealing (seed 4),22373,1.0
-annealing (seed 4),23597,1.0
-annealing (seed 4),24888,1.0
-annealing (seed 4),26250,1.0
-annealing (seed 4),27687,1.0
-annealing (seed 4),29202,1.0
-annealing (seed 4),30799,1.0
-annealing (seed 4),32485,1.0
-annealing (seed 4),34262,1.0
-annealing (seed 4),36137,1.0
-annealing (seed 4),38114,1.0
-annealing (seed 4),40200,1.0
+random,1,0.035
+random,2,0.068775
+random,3,0.101367875
+random,4,0.1328199994
+random,5,0.1631712994
+random,6,0.1924603039
+random,7,0.2207241933
+random,8,0.2479988465
+random,9,0.2743188869
+random,10,0.2997177258
+random,11,0.3242276054
+random,12,0.3478796393
+random,13,0.3707038519
+random,14,0.3927292171
+random,15,0.4139836945
+random,16,0.4344942652
+random,17,0.4542869659
+random,18,0.4733869221
+random,19,0.4918183798
+random,20,0.5096047365
+random,21,0.5267685707
+random,22,0.5433316708
+random,23,0.5593150623
+random,24,0.5747390351
+random,26,0.603986358
+random,27,0.6178468354
+random,29,0.6441294193
+random,30,0.6565848896
+random,32,0.6802032639
+random,34,0.7021972844
+random,35,0.7126203794
+random,37,0.7323849128
+random,39,0.7507901405
+random,42,0.7760520144
+random,44,0.7914540371
+random,46,0.8057967857
+random,49,0.8254827528
+random,52,0.8431731953
+random,54,0.8539589588
+random,57,0.8687628288
+random,60,0.882066062
+random,64,0.8977300476
+random,67,0.9080969353
+random,71,0.9203035003
+random,75,0.9308887893
+random,79,0.9400681403
+random,83,0.9480282899
+random,88,0.9565085813
+random,93,0.9636051326
+random,98,0.9695437304
+random,103,0.9745133195
+random,109,0.9794184938
+random,115,0.9833796167
+random,121,0.9865783807
+random,127,0.9891615097
+random,134,0.9915538267
+random,142,0.9936484679
+random,150,0.9952236406
+random,158,0.9964081722
+random,166,0.9972989413
+random,175,0.9980398927
+random,185,0.9986273716
+random,195,0.9990387727
+random,206,0.9993504291
+random,217,0.9995610379
+random,229,0.9997137439
+random,242,0.9998198601
+random,255,0.9998866387
+random,269,0.999931159
+random,283,0.9999581949
+random,299,0.999976359
+random,315,0.9999866309
+random,333,0.9999929596
+random,351,0.9999962925
+random,370,0.9999981159
+random,390,0.999999076
+random,412,0.9999995781
+random,434,0.9999998073
+random,458,0.9999999181
+random,483,0.9999999664
+random,509,0.9999999867
+random,537,0.9999999951
+random,567,0.9999999983
+random,598,0.9999999994
+random,630,0.9999999998
+random,665,0.9999999999
+random,701,1.0
+random,740,1.0
+random,780,1.0
+random,823,1.0
+random,868,1.0
+random,915,1.0
+random,965,1.0
+random,1018,1.0
+random,1074,1.0
+random,1133,1.0
+random,1195,1.0
+random,1260,1.0
+random,1329,1.0
+random,1402,1.0
+random,1478,1.0
+random,1559,1.0
+random,1644,1.0
+random,1734,1.0
+random,1829,1.0
+random,1929,1.0
+random,2035,1.0
+random,2146,1.0
+random,2264,1.0
+random,2388,1.0
+random,2518,1.0
+random,2656,1.0
+random,2801,1.0
+random,2955,1.0
+random,3116,1.0
+random,3287,1.0
+random,3467,1.0
+random,3657,1.0
+random,3857,1.0
+random,4068,1.0
+random,4290,1.0
+random,4525,1.0
+random,4773,1.0
+random,5034,1.0
+random,5309,1.0
+random,5600,1.0
+random,5906,1.0
+random,6229,1.0
+random,6570,1.0
+random,6930,1.0
+random,7309,1.0
+random,7709,1.0
+random,8131,1.0
+random,8575,1.0
+random,9045,1.0
+random,9540,1.0
+random,10062,1.0
+random,10612,1.0
+random,11193,1.0
+random,11805,1.0
+random,12451,1.0
+random,13133,1.0
+random,13851,1.0
+random,14609,1.0
+random,15409,1.0
+random,16252,1.0
+random,17141,1.0
+random,18079,1.0
+random,19068,1.0
+random,20112,1.0
+random,21212,1.0
+random,22373,1.0
+random,23597,1.0
+random,24888,1.0
+random,26250,1.0
+random,27687,1.0
+random,29202,1.0
+random,30799,1.0
+random,32485,1.0
+random,34262,1.0
+random,36137,1.0
+random,38114,1.0
+random,40200,1.0
+annealing,1,0.0
+annealing,2,0.0
+annealing,3,0.0
+annealing,4,0.0
+annealing,5,0.0
+annealing,6,0.0
+annealing,7,0.0
+annealing,8,0.0
+annealing,9,0.0
+annealing,10,0.0
+annealing,11,0.0
+annealing,12,0.0
+annealing,13,0.0
+annealing,14,0.0
+annealing,15,0.0
+annealing,16,0.0
+annealing,17,0.0
+annealing,18,0.0
+annealing,19,0.0
+annealing,20,0.0
+annealing,21,0.0
+annealing,22,0.0
+annealing,23,0.0
+annealing,24,0.0
+annealing,26,0.0
+annealing,27,0.0
+annealing,29,0.0
+annealing,30,0.0
+annealing,32,0.0
+annealing,34,0.0
+annealing,35,0.0
+annealing,37,0.0
+annealing,39,0.0
+annealing,42,0.0
+annealing,44,0.0
+annealing,46,0.0
+annealing,49,0.0
+annealing,52,0.0
+annealing,54,0.0
+annealing,57,0.0
+annealing,60,0.0
+annealing,64,0.0
+annealing,67,0.0
+annealing,71,0.0
+annealing,75,0.0
+annealing,79,0.0
+annealing,83,0.0
+annealing,88,0.0
+annealing,93,0.0
+annealing,98,0.0
+annealing,103,0.0
+annealing,109,0.0
+annealing,115,0.0
+annealing,121,0.0
+annealing,127,0.0
+annealing,134,0.0
+annealing,142,0.0
+annealing,150,0.0
+annealing,158,0.0
+annealing,166,0.0
+annealing,175,0.0
+annealing,185,0.0
+annealing,195,0.0
+annealing,206,0.795
+annealing,217,0.795
+annealing,229,0.795
+annealing,242,0.795
+annealing,255,0.795
+annealing,269,0.795
+annealing,283,0.795
+annealing,299,0.795
+annealing,315,0.795
+annealing,333,0.795
+annealing,351,0.795
+annealing,370,0.795
+annealing,390,0.795
+annealing,412,0.957975
+annealing,434,0.957975
+annealing,458,0.957975
+annealing,483,0.957975
+annealing,509,0.957975
+annealing,537,0.957975
+annealing,567,0.957975
+annealing,598,0.957975
+annealing,630,0.991384875
+annealing,665,0.991384875
+annealing,701,0.991384875
+annealing,740,0.991384875
+annealing,780,0.991384875
+annealing,823,0.9982338994
+annealing,868,0.9982338994
+annealing,915,0.9982338994
+annealing,965,0.9982338994
+annealing,1018,0.9996379494
+annealing,1074,0.9996379494
+annealing,1133,0.9996379494
+annealing,1195,0.9996379494
+annealing,1260,0.9999257796
+annealing,1329,0.9999257796
+annealing,1402,0.9999257796
+annealing,1478,0.9999847848
+annealing,1559,0.9999847848
+annealing,1644,0.9999968809
+annealing,1734,0.9999968809
+annealing,1829,0.9999993606
+annealing,1929,0.9999993606
+annealing,2035,0.9999998689
+annealing,2146,0.9999998689
+annealing,2264,0.9999999731
+annealing,2388,0.9999999731
+annealing,2518,0.9999999945
+annealing,2656,0.9999999989
+annealing,2801,0.9999999989
+annealing,2955,0.9999999998
+annealing,3116,1.0
+annealing,3287,1.0
+annealing,3467,1.0
+annealing,3657,1.0
+annealing,3857,1.0
+annealing,4068,1.0
+annealing,4290,1.0
+annealing,4525,1.0
+annealing,4773,1.0
+annealing,5034,1.0
+annealing,5309,1.0
+annealing,5600,1.0
+annealing,5906,1.0
+annealing,6229,1.0
+annealing,6570,1.0
+annealing,6930,1.0
+annealing,7309,1.0
+annealing,7709,1.0
+annealing,8131,1.0
+annealing,8575,1.0
+annealing,9045,1.0
+annealing,9540,1.0
+annealing,10062,1.0
+annealing,10612,1.0
+annealing,11193,1.0
+annealing,11805,1.0
+annealing,12451,1.0
+annealing,13133,1.0
+annealing,13851,1.0
+annealing,14609,1.0
+annealing,15409,1.0
+annealing,16252,1.0
+annealing,17141,1.0
+annealing,18079,1.0
+annealing,19068,1.0
+annealing,20112,1.0
+annealing,21212,1.0
+annealing,22373,1.0
+annealing,23597,1.0
+annealing,24888,1.0
+annealing,26250,1.0
+annealing,27687,1.0
+annealing,29202,1.0
+annealing,30799,1.0
+annealing,32485,1.0
+annealing,34262,1.0
+annealing,36137,1.0
+annealing,38114,1.0
+annealing,40200,1.0

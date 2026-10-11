@@ -7,7 +7,13 @@ import pytest
 from hp_fold import HPProblem
 from hp_fold.analysis.metrics import compute_metrics
 from hp_fold.analysis.result import RunResult
-from hp_fold.analysis.store import latest_runs, load_problem, load_result, save_result
+from hp_fold.analysis.store import (
+    latest_runs,
+    load_problem,
+    load_result,
+    problem_runs,
+    save_result,
+)
 
 
 @pytest.fixture(scope="module")
@@ -172,3 +178,17 @@ def test_latest_runs_orders_algorithms_by_when_they_first_ran(tmp_path):
 def test_latest_runs_of_an_empty_folder_is_an_error(tmp_path):
     with pytest.raises(ValueError, match="no saved runs"):
         latest_runs(tmp_path)
+
+
+def test_problem_runs_lists_every_run_of_the_newest_problem_oldest_first(tmp_path):
+    old = HPProblem.from_sequence("PHPPH")
+    new = HPProblem.from_sequence("HPHHHP")
+    _save(old, "random", 1, tmp_path)
+    kept = [_save(new, "random", 2, tmp_path), _save(new, "annealing", 3, tmp_path)]
+    kept.append(_save(new, "random", 4, tmp_path))
+    assert problem_runs(tmp_path) == kept
+
+
+def test_problem_runs_of_an_empty_folder_is_an_error(tmp_path):
+    with pytest.raises(ValueError, match="no saved runs"):
+        problem_runs(tmp_path)
