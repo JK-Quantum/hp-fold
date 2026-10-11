@@ -4,11 +4,16 @@ import numpy as np
 import pytest
 
 from hp_fold import HPProblem
-from hp_fold.analysis.metrics import compute_metrics, success_vs_shots
+from hp_fold.analysis.metrics import (
+    compute_metrics,
+    success_vs_evaluations,
+    success_vs_shots,
+)
 from hp_fold.analysis.result import RunResult
 
-GROUND = 19  # RDRU, a ground state of PHPPH (E = -1)
-STRAIGHT = 0  # RRRR: valid, no contacts (E = 0)
+GROUND = 19
+STRAIGHT = 0
+HALF = {GROUND: 0.5, STRAIGHT: 0.5}
 
 
 @pytest.fixture(scope="module")
@@ -149,3 +154,85 @@ def test_success_vs_shots_rejects_incompatible_result(problem):
     result = RunResult.from_samples("test", other, [0], evaluations=1)
     with pytest.raises(ValueError, match="problem"):
         success_vs_shots(problem, result, [1])
+
+
+def costed(
+    problem, weights: dict[int, float], shots, evaluations, training=None
+) -> RunResult:
+    probs = np.zeros(2**problem.n_qubits)
+    for x, w in weights.items():
+        probs[x] = w
+    extras = {} if training is None else {"training_evaluations": training}
+    return RunResult("test", problem.seq, probs, shots, evaluations, extras=extras)
+
+
+def test_success_vs_evaluations_one_evaluation_per_draw_is_success_vs_shots(problem):
+    result = costed(problem, HALF, shots=10, evaluations=10)
+    got = success_vs_evaluations(problem, result, [1, 2, 3])
+    assert got == pytest.approx([0.5, 0.75, 0.875])
+
+
+def test_success_vs_evaluations_a_draw_is_only_paid_for_once_fully_funded(problem):
+    result = costed(
+        problem, HALF, shots=10, evaluations=2000
+    )  # 200 evaluations per draw
+    got = success_vs_evaluations(problem, result, [0, 199, 200, 399, 400])
+    assert got == pytest.approx([0.0, 0.0, 0.5, 0.5, 0.75])
+
+
+def test_success_vs_evaluations_training_is_paid_once_before_the_first_draw(problem):
+    result = costed(problem, HALF, shots=100, evaluations=600, training=500)
+    got = success_vs_evaluations(problem, result, [0, 499, 500, 501, 502])
+    assert got == pytest.approx([0.0, 0.0, 0.0, 0.5, 0.75])
+
+
+def test_success_vs_evaluations_agrees_with_success_vs_shots_at_the_run_budget(problem):
+    result = costed(
+        problem, {GROUND: 0.1, STRAIGHT: 0.9}, shots=100, evaluations=600, training=500
+    )
+    at_budget = success_vs_evaluations(problem, result, [result.evaluations])
+    assert at_budget == pytest.approx(success_vs_shots(problem, result, [100]))
+
+
+def test_success_vs_evaluations_is_monotone_and_accepts_fractional_budgets(problem):
+    result = costed(problem, {GROUND: 0.05, STRAIGHT: 0.95}, shots=50, evaluations=250)
+    curve = success_vs_evaluations(problem, result, np.linspace(0.5, 1000, 400))
+    assert (np.diff(curve) >= 0).all()
+    assert curve[0] == 0.0 and curve[-1] > 0.99
+
+
+def test_success_vs_evaluations_extremes(problem):
+    always = costed(problem, {GROUND: 1.0}, shots=5, evaluations=5)
+    never = costed(problem, {STRAIGHT: 1.0}, shots=5, evaluations=5)
+    assert success_vs_evaluations(problem, always, [0, 1, 50]).tolist() == [
+        0.0,
+        1.0,
+        1.0,
+    ]
+    assert (success_vs_evaluations(problem, never, [0, 1, 50]) == 0.0).all()
+
+
+def test_success_vs_evaluations_needs_the_number_of_draws(problem):
+    result = costed(problem, HALF, shots=None, evaluations=10)
+    with pytest.raises(ValueError, match="shots"):
+        success_vs_evaluations(problem, result, [1])
+
+
+@pytest.mark.parametrize("training", [-1, 600, 700])
+def test_success_vs_evaluations_rejects_impossible_training_cost(problem, training):
+    result = costed(problem, HALF, shots=100, evaluations=600, training=training)
+    with pytest.raises(ValueError, match="training_evaluations"):
+        success_vs_evaluations(problem, result, [1])
+
+
+def test_success_vs_evaluations_rejects_negative_budgets(problem):
+    result = costed(problem, HALF, shots=10, evaluations=10)
+    with pytest.raises(ValueError, match="budget"):
+        success_vs_evaluations(problem, result, [-1, 5])
+
+
+def test_success_vs_evaluations_rejects_incompatible_result(problem):
+    other = HPProblem.from_sequence("HHPHH")
+    result = RunResult.from_samples("test", other, [0], evaluations=1)
+    with pytest.raises(ValueError, match="problem"):
+        success_vs_evaluations(problem, result, [1])

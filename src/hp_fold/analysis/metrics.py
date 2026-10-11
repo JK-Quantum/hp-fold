@@ -22,7 +22,7 @@ class Metrics:
     approx_ratio: float
 
 
-def _check_compatible(problem: HPProblem, result: RunResult) -> None:
+def check_compatible(problem: HPProblem, result: RunResult) -> None:
     if result.seq != problem.seq:
         raise ValueError(f"result is for {result.seq!r}, problem is {problem.seq!r}")
     if result.probs.size != problem.cost.size:
@@ -36,7 +36,7 @@ def _p_ground(problem: HPProblem, result: RunResult) -> float:
 
 
 def compute_metrics(problem: HPProblem, result: RunResult) -> Metrics:
-    _check_compatible(problem, result)
+    check_compatible(problem, result)
     probs = result.probs
     p_valid = float(probs[problem.valid].sum())
     if p_valid > 0:
@@ -65,11 +65,47 @@ def success_vs_shots(
 
     Treats result.probs as the distribution of a single draw, so it is exact.
     """
-    _check_compatible(problem, result)
+    check_compatible(problem, result)
     k = np.asarray(shots)
     if k.size and (k.min() < 1 or not np.issubdtype(k.dtype, np.integer)):
         raise ValueError("shots must be positive integers")
-    p = _p_ground(problem, result)
+    return _at_least_one(_p_ground(problem, result), k)
+
+
+def success_vs_evaluations(
+    problem: HPProblem,
+    result: RunResult,
+    budgets: ArrayLike,
+) -> np.ndarray:
+    """P(at least one ground state) when `budgets` cost-function evaluations are spent.
+
+    Cost model: `result.extras["training_evaluations"]` (default 0) is paid once, before
+    the distribution is fixed.
+    The rest of `result.evaluations` is spread evenly over the `result.shots` draws.
+    Only complete draws count, so the curve is a step function that is 0 until training
+    and the first draw are paid for.
+    """
+    check_compatible(problem, result)
+    if result.shots is None:
+        raise ValueError(
+            "success_vs_evaluations needs result.shots (the number of draws)"
+        )
+    training = float(result.extras.get("training_evaluations", 0))
+    if not 0 <= training < result.evaluations:
+        raise ValueError(
+            f"extras['training_evaluations'] must be in [0, evaluations), "
+            f"got {training:g} with {result.evaluations} evaluations"
+        )
+    budget = np.asarray(budgets, dtype=float)
+    if budget.size and budget.min() < 0:
+        raise ValueError("budgets must be non-negative")
+    per_draw = (result.evaluations - training) / result.shots
+    draws = np.floor(np.maximum(budget - training, 0.0) / per_draw)
+    return _at_least_one(_p_ground(problem, result), draws)
+
+
+def _at_least_one(p: float, draws: np.ndarray) -> np.ndarray:
+    """1 - (1 - p)**draws, accurate for tiny p; exactly 0 for zero draws."""
     if p >= 1.0:
-        return np.ones(k.shape)
-    return -np.expm1(k * np.log1p(-p))  # 1 - (1 - p)**k, accurate for tiny p
+        return (draws >= 1).astype(float)
+    return -np.expm1(draws * np.log1p(-p))

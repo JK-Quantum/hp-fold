@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "run_id": "20261011T141455Z_random-phpph-4",
+  "created_at": "2026-10-11T14:14:55.376963+00:00",
+  "provenance": {
+    "git_commit": "f77b23e7b8c977055b2afcb46f301e5c32fe0a11",
+    "git_dirty": true,
+    "python": "3.14.2",
+    "packages": {
+      "numpy": "2.5.3",
+      "qiskit": "2.5.2",
+      "qiskit-aer": "0.17.2",
+      "qiskit-ionq": "1.1.1"
+    }
+  },
+  "problem": {
+    "seq": "PHPPH",
+    "penalty": 5.0,
+    "n_qubits": 6,
+    "ground_energy": -1.0
+  },
+  "result": {
+    "algorithm": "random",
+    "seq": "PHPPH",
+    "shots": 200,
+    "evaluations": 200,
+    "seed": 4,
+    "config": {
+      "n_samples": 200
+    },
+    "extras": {}
+  },
+  "metrics": {
+    "p_ground": 0.060000000000000005,
+    "p_valid": 0.35500000000000004,
+    "expected_energy": 3.885,
+    "best_energy": -1.0,
+    "mean_valid_energy": -0.16901408450704225,
+    "approx_ratio": 0.16901408450704225
+  },
+  "arrays_file": "20261011T141455Z_random-phpph-4.npz"
+}

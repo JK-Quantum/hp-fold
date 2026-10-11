@@ -70,12 +70,7 @@ def save_result(problem: HPProblem, result: RunResult, directory: str | Path) ->
 
 def load_result(path: str | Path) -> RunResult:
     path = Path(path)
-    record = json.loads(path.read_text())
-    if record.get("schema_version") != SCHEMA_VERSION:
-        raise ValueError(
-            f"unsupported schema_version {record.get('schema_version')!r} in "
-            f"{path.name}"
-        )
+    record = _read_record(path)
     saved = record["result"]
     with np.load(path.with_name(record["arrays_file"])) as arrays:
         extras = dict(saved["extras"])
@@ -92,6 +87,35 @@ def load_result(path: str | Path) -> RunResult:
             config=saved["config"],
             extras=extras,
         )
+
+
+def load_problem(path: str | Path) -> HPProblem:
+    """Rebuild the problem a saved run was made for (sequence and penalty)."""
+    saved = _read_record(Path(path))["problem"]
+    return HPProblem.from_sequence(saved["seq"], saved["penalty"])
+
+
+def latest_runs(directory: str | Path) -> list[Path]:
+    """Newest run of each algorithm, among the runs of the most recent problem.
+
+    "Problem" means (sequence, penalty), so the returned runs are comparable. Runs are
+    ordered by when each algorithm first ran. Age comes from the `created_at` stored in
+    each file, not from the file name.
+    """
+    latest: dict[str, Path] = {}
+    for path in problem_runs(directory):
+        latest[_read_record(path)["result"]["algorithm"]] = path
+    return list(latest.values())
+
+
+def _read_record(path: Path) -> dict[str, Any]:
+    record = json.loads(path.read_text())
+    if record.get("schema_version") != SCHEMA_VERSION:
+        raise ValueError(
+            f"unsupported schema_version {record.get('schema_version')!r} in "
+            f"{path.name}"
+        )
+    return record
 
 
 def _jsonable(value: Any, where: str) -> Any:
@@ -157,3 +181,21 @@ def _provenance() -> dict[str, Any]:
         "python": sys.version.split()[0],
         "packages": {name: _version(name) for name in _PACKAGES},
     }
+
+
+def problem_runs(directory: str | Path) -> list[Path]:
+    """Every run of the most recent problem, oldest first.
+
+    "Problem" means (sequence, penalty), so the returned runs are comparable.
+    Age comes from `created_at` stored in each file, not from the file name.
+    """
+    records = [(path, _read_record(path)) for path in Path(directory).glob("*.json")]
+    if not records:
+        raise ValueError(f"no saved runs in {directory}")
+    records.sort(key=lambda item: item[1]["created_at"])
+    newest = _problem_key(records[-1][1])
+    return [path for path, record in records if _problem_key(record) == newest]
+
+
+def _problem_key(record: dict[str, Any]) -> tuple[str, float]:
+    return record["problem"]["seq"], record["problem"]["penalty"]
