@@ -100,7 +100,6 @@ Priority order. Stop adding algorithms when the clock says so.
 | -------- | ------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------- |
 | 1        | QAOA (Qiskit)                  | `QAOAAnsatz` from the `SparsePauliOp`, run on Aer, optimizer loop | matches the NumPy version within sampling noise |
 | 2        | CVaR-QAOA                      | same circuit, CVaR objective, alpha in {0.05, 0.1, 0.25}          | P(GS) comparison vs standard QAOA               |
-| 3        | VQE, hardware-efficient ansatz | `EfficientSU2` or `RealAmplitudes`, CVaR objective                | runs at N=6, reports P(GS)                      |
 
 **Tasks**
 
@@ -138,11 +137,11 @@ Choose from this list in order. Do not start the next item before the previous h
 
 **Tasks (in order)**
 
-- [ ] B: pick the hardware configuration. Constraints: qubit count ($2(N-2)$), transpiled two-qubit gate count, shot budget. Start at N=5 (6 qubits) and p=1. Fixed parameters from the simulator's best run, so hardware only does evaluation (no optimizer loop on QPU).
+- [x] B: pick the hardware configuration. Constraints: qubit count ($2(N-2)$), transpiled two-qubit gate count, shot budget. Start at N=5 (6 qubits) and p=1. Fixed parameters from the simulator's best run, so hardware only does evaluation (no optimizer loop on QPU).
 
-- [ ] B: run on the **IonQ simulator without noise**; confirm it matches Aer.
+- [x] B: run on the **IonQ simulator without noise**; confirm it matches Aer.
 
-- [ ] B: run on the **IonQ simulator with the hardware noise model** (if offered).
+- [x] B: run on the **IonQ simulator with the hardware noise model** (if offered).
 
 - [ ] B: run on the **QPU** with the shot budget agreed in Sprint 0. Submit early; queues can be slow. Keep job IDs in `results/ionq_jobs.json`.
 
