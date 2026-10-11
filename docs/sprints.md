@@ -106,9 +106,9 @@ Priority order. Stop adding algorithms when the clock says so.
 
 - [ ] B: implement algorithms 1-3 first, behind a common interface: `run(problem, backend, **cfg) -> Result` where `Result` holds probabilities/counts, parameters, optimizer history and circuit stats (depth, two-qubit gate count after transpile).
 
-- [ ] A: `metrics.py`: P(ground state), P(valid fold), approximation ratio, best-sampled energy, success versus number of shots.
+- [x] A: `metrics.py`: P(ground state), P(valid fold), approximation ratio, best-sampled energy, success versus number of shots.
 
-- [ ] A: `scripts/run_experiment.py`: config-driven runner (algorithm, N, p, seed) writing JSON to `results/`. Deterministic seeds.
+- [x] A: `scripts/run_experiment.py`: config-driven runner (algorithm, N, p, seed) writing JSON to `results/`. Deterministic seeds.
 
 - [ ] A: `viz.py`: fold picture, P(GS) vs p, bitstring probability histogram colored by validity.
 
