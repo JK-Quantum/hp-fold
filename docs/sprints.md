@@ -103,7 +103,7 @@ Priority order. Stop adding algorithms when the clock says so.
 
 **Tasks**
 
-- [ ] B: QAOA, CVaR-QAOA and the noisy variant behind the common interface `f(problem, params, seed) -> RunResult` (probabilities, parameters, optimizer history in `extras`). VQE and adiabatic are future steps.
+- [x] B: QAOA, CVaR-QAOA and the noisy variant behind the common interface `f(problem, params, seed) -> RunResult` (probabilities, parameters, optimizer history in `extras`). VQE and adiabatic are future steps.
 
 - [x] A: `metrics.py`: P(ground state), P(valid fold), approximation ratio, best-sampled energy, success versus number of shots.
 
@@ -111,7 +111,7 @@ Priority order. Stop adding algorithms when the clock says so.
 
 - [x] A: `viz/`: P(GS) vs p (`sweep.py`), probability histogram by energy colored by validity (`energy.py`), plus budget, convergence and landscape figures.
 
-- [ ] A: `viz/fold.py`: picture of a fold on the lattice (H/P colored), drawn for the ground state of each problem.
+- [x] A: `viz/fold.py`: picture of a fold on the lattice (H/P colored), drawn for the ground state of each problem.
 
 - [x] B: record circuit depth and two-qubit gate count per algorithm and N. These numbers are the bridge to the IonQ sprint.
 
