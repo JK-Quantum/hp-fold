@@ -111,7 +111,7 @@ Priority order. Stop adding algorithms when the clock says so.
 
 - [ ] A: `viz.py`: fold picture, P(GS) vs p, bitstring probability histogram colored by validity.
 
-- [ ] B: record circuit depth and two-qubit gate count per algorithm and N. These numbers are the bridge to the IonQ sprint.
+- [x] B: record circuit depth and two-qubit gate count per algorithm and N. These numbers are the bridge to the IonQ sprint.
 
 **Deliverable:** one comparison table (algorithm x p) at N=6 with random and simulated-annealing baselines.
 
@@ -143,11 +143,7 @@ Choose from this list in order. Do not start the next item before the previous h
 
 - [x] B: run on the **IonQ simulator with the hardware noise model** (if offered).
 
-- [ ] B: run on the **QPU** with the shot budget agreed in Sprint 0. Submit early; queues can be slow. Keep job IDs in `results/ionq_jobs.json`.
-
 - [ ] A: analysis: P(GS), P(valid), energy distribution for ideal vs noise-model vs hardware; how P(GS) decays with circuit depth or number of Pauli terms.
-
-- [ ] Both: error mitigation, such as readout correction or post-selecting valid folds. Post-selection is cheap here because validity is checkable classically.
 
 - [ ] Both: a "resource usage" slide: qubits, circuits, shots, jobs, queue time. Show deliberate choices (why this size, why fixed parameters, why these shots).
 

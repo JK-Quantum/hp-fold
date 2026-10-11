@@ -115,8 +115,7 @@ class QAOAExperiment:
         return ExperimentResult(self._problem, results, probabilities)
 
     def landscape(self, grid: int = 60) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-        """<C> of the p=1 circuit on a grid: (gammas, betas, z)."""
-        circuit = self.circuit(1)
+        circuit = NumpyQAOA(self._problem, 1)
         gammas = np.linspace(0, np.pi, grid)
         betas = np.linspace(0, np.pi / 2, grid)
         z = np.array(
