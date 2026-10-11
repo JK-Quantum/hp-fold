@@ -35,21 +35,20 @@ def minimize_with_restarts(
     starts = [rng.uniform(low, high, n_params) for _ in range(restarts)]
     starts += [np.asarray(x, dtype=float) for x in extra_starts]
 
-    best: tuple[np.ndarray, float, list[float]] | None = None
-    n_evaluations, restart_values = 0, []
+    best: tuple[np.ndarray, float] | None = None
+    history: list[float] = []
+    restart_values = []
+
+    def tracked(x: np.ndarray) -> float:
+        value = objective(x)
+        history.append(min(value, history[-1]) if history else value)
+        return value
+
     for x0 in starts:
-        history: list[float] = []
-
-        def tracked(x: np.ndarray, history: list[float] = history) -> float:
-            value = objective(x)
-            history.append(min(value, history[-1]) if history else value)
-            return value
-
         result = minimize(tracked, x0, method="COBYLA", options={"maxiter": maxiter})
-        n_evaluations += len(history)
         restart_values.append(float(result.fun))
         if best is None or result.fun < best[1]:
-            best = (np.asarray(result.x), float(result.fun), history)
+            best = (np.asarray(result.x), float(result.fun))
 
     assert best is not None
-    return OptimizationResult(best[0], best[1], n_evaluations, best[2], restart_values)
+    return OptimizationResult(best[0], best[1], len(history), history, restart_values)

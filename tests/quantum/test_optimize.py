@@ -25,8 +25,10 @@ def test_is_reproducible_for_a_seed():
     assert np.array_equal(a.params, b.params)
 
 
-def test_history_is_a_non_increasing_best_so_far_curve():
-    result = minimize_with_restarts(bowl, 2, restarts=1, rng=np.random.default_rng(1))
+def test_history_is_one_best_so_far_curve_over_every_evaluation():
+    result = minimize_with_restarts(bowl, 2, restarts=3, rng=np.random.default_rng(1))
+    assert len(result.history) == result.n_evaluations
+    assert result.history[-1] == pytest.approx(result.value)
     pairs = zip(result.history, result.history[1:], strict=False)
     assert all(a >= b for a, b in pairs)
 

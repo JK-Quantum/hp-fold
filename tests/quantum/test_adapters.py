@@ -25,7 +25,7 @@ def test_qaoa_result_follows_the_standard_and_survives_saving(problem, tmp_path)
     assert training > 0
     assert result.evaluations == training + result.shots
     assert len(result.extras["gammas"]) == len(result.extras["betas"]) == 1
-    assert result.extras["objective_history"]
+    assert len(result.extras["objective_history"]) == training
 
     loaded = load_result(save_result(problem, result, tmp_path))
     assert np.array_equal(loaded.probs, result.probs)
