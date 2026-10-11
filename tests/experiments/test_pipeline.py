@@ -46,7 +46,7 @@ def test_pipeline_runs_summarizes_and_draws_every_available_figure(tmp_path):
     assert (tmp_path / "out" / "summary.csv").exists()
     assert not report.figures.skipped
     names = {path.name for path in report.figures.written if path.suffix == ".png"}
-    for figure in ("energy", "budget", "convergence", "sweep", "landscape"):
+    for figure in ("fold", "energy", "budget", "convergence", "sweep", "landscape"):
         assert f"{figure}_PHPPH_light.png" in names
         assert f"{figure}_PHPPH_dark.png" in names
 
@@ -57,6 +57,6 @@ def test_figures_the_runs_cannot_support_are_skipped_not_failed(tmp_path):
     assert set(report.figures.skipped) == {"convergence", "sweep", "landscape"}
     assert {p.name for p in report.figures.written if p.suffix == ".png"} == {
         f"{figure}_PHPPH_{theme}.png"
-        for figure in ("energy", "budget")
+        for figure in ("fold", "energy", "budget")
         for theme in ("light", "dark")
     }

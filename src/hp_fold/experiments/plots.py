@@ -21,6 +21,7 @@ from hp_fold.folding.problem import HPProblem
 from hp_fold.viz.budget import budget_grid, plot_success_vs_evaluations, success_rows
 from hp_fold.viz.convergence import HISTORY_KEY, objective_history, plot_convergence
 from hp_fold.viz.energy import plot_energy_distributions, save_figure
+from hp_fold.viz.fold import plot_fold
 from hp_fold.viz.landscape import plot_landscape
 from hp_fold.viz.report import (
     label_of,
@@ -55,6 +56,7 @@ def draw_figures(
     skipped: dict[str, str] = {}
     errors: dict[str, str] = {}
     for name, make in (
+        ("fold", lambda: _fold(problem)),
         ("energy", lambda: _energy(problem, labeled)),
         ("budget", lambda: _budget(problem, labeled)),
         ("convergence", lambda: _convergence(problem, labeled)),
@@ -85,6 +87,11 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> Path:
         for row in rows:
             writer.writerow({k: _tidy(v) for k, v in row.items()})
     return path
+
+
+def _fold(problem: HPProblem) -> Made:
+    ground = int(problem.ground_states[0])
+    return (lambda theme: plot_fold(problem, ground, theme)), []
 
 
 def _energy(problem: HPProblem, labeled: Labeled) -> Made:
