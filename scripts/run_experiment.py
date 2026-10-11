@@ -5,6 +5,7 @@
 
 Everything that defines the experiment lives in the config file, so the config
 reproduces the results. Exit code is 1 if any run failed.
+Exit code: 0 ok, 1 if any run failed, 2 if the experiment could not start.
 """
 
 import math
@@ -24,11 +25,16 @@ PER_RUN = False
 
 def main() -> int:
     config_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_CONFIG
-    config = load_config(config_path, base_dir=ROOT)
-    report = run_experiment(config)
+    try:
+        config = load_config(config_path, base_dir=ROOT)
+        report = run_experiment(config)
+    except (OSError, ValueError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
 
-    problem = HPProblem.from_sequence(config.sequence, config.penalty)
+    problem = HPProblem.from_sequence(report.sequence, config.penalty)
     print(f"config   {config_path}")
+    print(f"origin   {report.origin}")
     print(
         f"sequence {problem.seq}: {problem.n_qubits} qubits, {2**problem.n_qubits} "
         f"folds, "
@@ -55,7 +61,9 @@ def main() -> int:
 
 
 def print_table(
-    rows: list[SummaryRow], label_seed: bool, seeds: list[int | None]
+    rows: list[SummaryRow],
+    label_seed: bool,
+    seeds: list[int | None],
 ) -> None:
     labels = [_label(row) for row in rows]
     if label_seed:

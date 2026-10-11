@@ -1,0 +1,24 @@
+# Real-protein experiment: an HP fragment cut from ubiquitin (PDB 1UBQ).
+
+seed = 0
+output = "data/results/runs/1ubq"
+
+[problem]
+cif = "data/raw/1UBQ.cif"
+length = 6
+pick = 0
+# penalty = 6.0
+
+[[runs]]
+algorithm = "random"
+repeats = 5
+
+[runs.params]
+n_samples = 200
+
+[[runs]]
+algorithm = "annealing"
+repeats = 5
+
+[runs.params]
+n_samples = 200

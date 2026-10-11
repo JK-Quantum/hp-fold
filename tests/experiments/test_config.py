@@ -119,3 +119,63 @@ def test_every_committed_config_parses():
     assert paths, f"no configs found in {CONFIGS}"
     for path in paths:
         load_config(path, base_dir=CONFIGS.parent)
+
+
+def cif_problem(**extra):
+    return minimal(problem={"cif": "data/raw/1UBQ.cif", **extra})
+
+
+def test_cif_problem_is_read_with_defaults():
+    cfg = parse_config(cif_problem(), BASE)
+    assert cfg.sequence is None
+    assert cfg.cif == BASE / "data" / "raw" / "1UBQ.cif"
+    assert (cfg.fragment_length, cfg.fragment_pick) == (6, 0)
+
+
+def test_cif_problem_reads_length_and_pick_and_keeps_absolute_paths():
+    cfg = parse_config(
+        minimal(problem={"cif": "/data/x.cif", "length": 8, "pick": 3}), BASE
+    )
+    assert cfg.cif == Path("/data/x.cif")
+    assert (cfg.fragment_length, cfg.fragment_pick) == (8, 3)
+
+
+def test_sequence_problem_has_no_cif():
+    cfg = parse_config(minimal(), BASE)
+    assert cfg.cif is None
+
+
+@pytest.mark.parametrize(
+    "problem",
+    [
+        {"sequence": "PHPPH", "cif": "x.cif"},
+        {"penalty": 3},
+    ],
+)
+def test_exactly_one_of_sequence_and_cif_is_required(problem):
+    with pytest.raises(ValueError, match="either 'sequence' or 'cif'"):
+        parse_config(minimal(problem=problem), BASE)
+
+
+@pytest.mark.parametrize("key", ["length", "pick"])
+def test_fragment_options_need_a_cif(key):
+    with pytest.raises(ValueError, match="only valid together with 'cif'"):
+        parse_config(minimal(problem={"sequence": "PHPPH", key: 4}), BASE)
+
+
+@pytest.mark.parametrize("length", [3, 0, 1.5, True, "6"])
+def test_bad_fragment_length_is_rejected(length):
+    with pytest.raises(ValueError, match="length"):
+        parse_config(cif_problem(length=length), BASE)
+
+
+@pytest.mark.parametrize("pick", [-1, 1.5, True, "0"])
+def test_bad_fragment_pick_is_rejected(pick):
+    with pytest.raises(ValueError, match="pick"):
+        parse_config(cif_problem(pick=pick), BASE)
+
+
+@pytest.mark.parametrize("cif", ["", 5, None])
+def test_bad_cif_path_is_rejected(cif):
+    with pytest.raises(ValueError, match="cif"):
+        parse_config(minimal(problem={"cif": cif}), BASE)

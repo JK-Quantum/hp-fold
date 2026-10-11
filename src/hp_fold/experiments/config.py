@@ -1,7 +1,4 @@
-"""Experiment configuration.
-
-A TOML file, validated into frozen dataclasses.
-"""
+"""Experiment configuration: a TOML file, validated into frozen dataclasses."""
 
 import tomllib
 from collections.abc import Mapping
@@ -12,7 +9,8 @@ from typing import Any
 DEFAULT_OUTPUT = "data/results/runs"
 
 _TOP_KEYS = {"seed", "output", "problem", "runs"}
-_PROBLEM_KEYS = {"sequence", "penalty"}
+_PROBLEM_KEYS = {"sequence", "cif", "length", "pick", "penalty"}
+DEFAULT_FRAGMENT_LENGTH = 6
 _RUN_KEYS = {"algorithm", "repeats", "params"}
 
 
@@ -25,11 +23,16 @@ class RunSpec:
 
 @dataclass(frozen=True, slots=True)
 class ExperimentConfig:
-    sequence: str
+    """The problem is either a given HP `sequence` or a fragment picked from a file."""
+
+    sequence: str | None
     penalty: float | None
     seed: int
     output: Path
     runs: tuple[RunSpec, ...]
+    cif: Path | None = None
+    fragment_length: int = DEFAULT_FRAGMENT_LENGTH
+    fragment_pick: int = 0
 
 
 def load_config(
@@ -57,13 +60,30 @@ def parse_config(data: Mapping[str, Any], base_dir: Path) -> ExperimentConfig:
     if not isinstance(runs, list) or not runs:
         raise ValueError("config needs at least one [[runs]] entry")
 
+    has_sequence, has_cif = "sequence" in problem, "cif" in problem
+    if has_sequence == has_cif:
+        raise ValueError(
+            "[problem] needs either 'sequence' or 'cif' (exactly one of them)"
+        )
+    if has_sequence and ({"length", "pick"} & set(problem)):
+        raise ValueError(
+            "[problem] 'length' and 'pick' are only valid together with 'cif'"
+        )
+
     output = Path(data.get("output", DEFAULT_OUTPUT))
     return ExperimentConfig(
-        sequence=_sequence(problem.get("sequence")),
+        sequence=_sequence(problem["sequence"]) if has_sequence else None,
         penalty=_penalty(problem.get("penalty")),
         seed=_integer("seed", data.get("seed", 0), minimum=None),
-        output=output if output.is_absolute() else base_dir / output,
+        output=_resolve(output, base_dir),
         runs=tuple(_run(i, r) for i, r in enumerate(runs)),
+        cif=_cif(problem["cif"], base_dir) if has_cif else None,
+        fragment_length=_integer(
+            "problem.length",
+            problem.get("length", DEFAULT_FRAGMENT_LENGTH),
+            minimum=4,
+        ),
+        fragment_pick=_integer("problem.pick", problem.get("pick", 0), minimum=0),
     )
 
 
@@ -79,6 +99,16 @@ def _integer(name: str, value: Any, minimum: int | None) -> int:
     if minimum is not None and value < minimum:
         raise ValueError(f"{name} must be at least {minimum}, got {value}")
     return value
+
+
+def _resolve(path: Path, base_dir: Path) -> Path:
+    return path if path.is_absolute() else base_dir / path
+
+
+def _cif(value: Any, base_dir: Path) -> Path:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"problem.cif must be a non-empty path string, got {value!r}")
+    return _resolve(Path(value), base_dir)
 
 
 def _sequence(value: Any) -> str:

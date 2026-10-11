@@ -2,7 +2,7 @@
 # Relative paths resolve against the repository root.
 
 seed = 0
-output = "data/results/runs"
+output = "data/results/runs/PHPPH"
 
 [problem]
 sequence = "PHPPH" # H = hydrophobic, P = polar
