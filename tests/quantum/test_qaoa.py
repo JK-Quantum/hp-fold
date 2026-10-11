@@ -7,9 +7,6 @@ from scipy.optimize import minimize
 from hp_fold.folding.problem import HPProblem
 from hp_fold.quantum.qaoa import QAOACircuit
 
-N_QUBITS = 6
-DIM = 2**N_QUBITS
-
 
 @pytest.fixture(scope="module")
 def problem() -> HPProblem:
@@ -19,15 +16,17 @@ def problem() -> HPProblem:
 def dense_reference_probabilities(
     cost: np.ndarray, gammas: list[float], betas: list[float]
 ) -> np.ndarray:
-    """Independent oracle: full 64x64 matrices, no Qiskit, no tricks."""
+    """Independent oracle: full dense matrices, no Qiskit, no tricks."""
+    n_qubits = int(np.log2(cost.size))
+    dim = cost.size
     x = np.array([[0, 1], [1, 0]], dtype=complex)
     identity = np.eye(2, dtype=complex)
     mixer_generator = sum(
-        reduce(np.kron, [x if q == k else identity for q in range(N_QUBITS)])
-        for k in range(N_QUBITS)
+        reduce(np.kron, [x if q == k else identity for q in range(n_qubits)])
+        for k in range(n_qubits)
     )
     eigvals, eigvecs = np.linalg.eigh(mixer_generator)
-    psi = np.full(DIM, DIM**-0.5, dtype=complex)
+    psi = np.full(dim, dim**-0.5, dtype=complex)
     for gamma, beta in zip(gammas, betas, strict=True):
         psi = np.exp(-1j * gamma * cost) * psi
         mixer = eigvecs @ np.diag(np.exp(-1j * beta * eigvals)) @ eigvecs.conj().T
@@ -37,7 +36,7 @@ def dense_reference_probabilities(
 
 def test_depth_zero_is_uniform_with_mean_cost(problem):
     circuit = QAOACircuit(problem, p=0)
-    assert np.allclose(circuit.probabilities(np.array([])), 1 / DIM)
+    assert np.allclose(circuit.probabilities(np.array([])), 1 / problem.cost.size)
     assert circuit.expectation(np.array([])) == pytest.approx(problem.cost.mean())
 
 
@@ -58,7 +57,9 @@ def test_cost_layer_phases_land_on_the_right_fold_index(problem):
     # beta = 0 makes the mixer the identity, so the state is the raw phase vector.
     circuit = QAOACircuit(problem, p=1, center_cost=False)
     psi = circuit.statevector(np.array([0.5, 0.0]))
-    assert np.allclose(psi, np.exp(-1j * 0.5 * problem.cost) / 8)
+    assert np.allclose(
+        psi, np.exp(-1j * 0.5 * problem.cost) / np.sqrt(problem.cost.size)
+    )
 
 
 def test_centering_does_not_change_probabilities(problem):
@@ -71,7 +72,7 @@ def test_centering_does_not_change_probabilities(problem):
 
 def test_mixer_alone_leaves_uniform_state_invariant(problem):
     probs = QAOACircuit(problem, p=1).probabilities(np.array([0.0, 0.3]))
-    assert np.allclose(probs, 1 / DIM)
+    assert np.allclose(probs, 1 / problem.cost.size)
 
 
 def test_extra_layer_with_zero_angles_changes_nothing(problem):
@@ -106,7 +107,7 @@ def test_sample_is_reproducible_and_in_range(problem):
     a = circuit.sample(params, 100, np.random.default_rng(1))
     b = circuit.sample(params, 100, np.random.default_rng(1))
     assert np.array_equal(a, b)
-    assert a.min() >= 0 and a.max() < DIM
+    assert a.min() >= 0 and a.max() < problem.cost.size
 
 
 def test_invalid_inputs(problem):
@@ -114,3 +115,33 @@ def test_invalid_inputs(problem):
         QAOACircuit(problem, p=-1)
     with pytest.raises(ValueError, match="parameters"):
         QAOACircuit(problem, p=2).statevector(np.zeros(3))
+
+
+def test_cost_layers_are_pauli_evolutions_not_dense_diagonals(problem):
+    circuit = QAOACircuit(problem, p=2)
+    names = {inst.operation.name for inst in circuit.ansatz.decompose(reps=1).data} | {
+        inst.operation.name for inst in circuit.ansatz.data
+    }
+    assert "diagonal" not in names
+
+
+def test_ansatz_parameters_are_bound_by_name_not_position(problem):
+    circuit = QAOACircuit(problem, p=2)
+    assert [p.name for p in circuit.ansatz.parameters] == [
+        "β[0]",
+        "β[1]",
+        "γ[0]",
+        "γ[1]",
+    ]
+    params = np.array([0.37, -0.81, 0.22, 0.54])  # [gamma..., beta...]
+    bound = circuit.build_qaoa_circuit(params)
+    assert bound.num_parameters == 0
+    ref = dense_reference_probabilities(problem.cost, [0.37, -0.81], [0.22, 0.54])
+    assert np.allclose(circuit.probabilities(params), ref)
+
+
+def test_measured_circuit_measures_every_qubit_and_has_no_free_parameters(problem):
+    measured = QAOACircuit(problem, p=1).measured_circuit(np.array([0.4, 0.3]))
+    assert measured.num_parameters == 0
+    assert measured.num_clbits == problem.n_qubits
+    assert measured.count_ops()["measure"] == problem.n_qubits

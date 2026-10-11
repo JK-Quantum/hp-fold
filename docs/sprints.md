@@ -59,9 +59,9 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 - [x] A: create repo layout from the README, setup `uv`, `.gitignore`.
 - [x] A: search and download molecule datasets.
-- [ ] B: verify the IonQ API key works, list the available backends (simulator, noise models, QPU).
-- [ ] B: find qubit limits, job queue behavior and the credit/shot budget.
-- [ ] B: submit one trivial 2-qubit circuit to the IonQ simulator through Qiskit to prove the path end to end.
+- [x] B: verify the IonQ API key works, list the available backends (simulator, noise models, QPU).
+- [x] B: find qubit limits, job queue behavior and the credit/shot budget.
+- [x] B: submit one trivial 2-qubit circuit to the IonQ simulator through Qiskit to prove the path end to end.
 - [x] Both: agree on the interface above and the bit-ordering convention.
 
 **Deliverable:** repo pushed, both devs can run `pytest` and one IonQ simulator job.
@@ -82,11 +82,11 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 - [ ] A: tests: a hand-checked `HPPH` fold has $E=-1$, a straight chain has $E=0$, symmetry degeneracy counted correctly. Add one or two published HP benchmark energies if you can find them quickly.
 
-- [ ] B: NumPy QAOA statevector (diagonal phase layer + X mixer), expectation and CVaR objectives, COBYLA with restarts. This is the fast reference implementation and the debugging oracle for the Qiskit version.
+- [x] B: NumPy QAOA statevector (diagonal phase layer + X mixer), expectation and CVaR objectives, COBYLA with restarts. This is the fast reference implementation and the debugging oracle for the Qiskit version.
 
-- [ ] B: `pauli.py`: fast Walsh-Hadamard transform of the cost vector into Z-string coefficients, prune near-zero terms, return `SparsePauliOp`. Test: `SparsePauliOp.to_matrix().diagonal()` equals `cost`.
+- [x] B: `pauli.py`: fast Walsh-Hadamard transform of the cost vector into Z-string coefficients, prune near-zero terms, return `SparsePauliOp`. Test: `SparsePauliOp.to_matrix().diagonal()` equals `cost`.
 
-- [ ] B: record the **number of Pauli terms and their weights** for N=5, 6, 7, 8. This predicts circuit depth on IonQ and decides how large the hardware run can be.
+- [x] B: record the **number of Pauli terms and their weights** for N=5, 6, 7, 8. This predicts circuit depth on IonQ and decides how large the hardware run can be.
 
 **Deliverable:** `scripts/hello_world.py` for N=6 prints the optimal fold, P(GS) for QAOA p=1..3, and the random baseline.
 

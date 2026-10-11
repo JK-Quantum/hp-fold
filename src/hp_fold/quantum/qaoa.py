@@ -1,8 +1,11 @@
 import numpy as np
-from hp_fold.folding.problem import HPProblem
 from qiskit import QuantumCircuit
+from qiskit.circuit.library import QAOAAnsatz
 from qiskit.quantum_info import Statevector
-from qiskit.circuit.library import DiagonalGate
+
+from hp_fold.folding.problem import HPProblem
+from hp_fold.quantum.pauli import cost_to_pauli
+
 
 class QAOACircuit:
     """A depth-p QAOA for one HPProblem, reusable across parameter values."""
@@ -14,7 +17,17 @@ class QAOACircuit:
         self._p = p
         self._center_cost = center_cost
         self._offset = float(problem.cost.mean()) if center_cost else 0.0
-        self._phase_cost = problem.cost - self._offset
+        self._ansatz = self._build_ansatz(problem.cost - self._offset)
+        by_name = {param.name: param for param in self._ansatz.parameters}
+        self._gammas = [by_name[f"γ[{i}]"] for i in range(p)]
+        self._betas = [by_name[f"β[{i}]"] for i in range(p)]
+
+    def _build_ansatz(self, phase_cost: np.ndarray) -> QuantumCircuit:
+        if self._p == 0:
+            circuit = QuantumCircuit(self.n_qubits)
+            circuit.h(range(self.n_qubits))
+            return circuit
+        return QAOAAnsatz(cost_to_pauli(phase_cost), reps=self._p)
 
     def __repr__(self) -> str:
         return (
@@ -23,12 +36,21 @@ class QAOACircuit:
         )
 
     @property
+    def problem(self) -> HPProblem:
+        return self._problem
+
+    @property
     def n_qubits(self) -> int:
         return self._problem.n_qubits
 
     @property
     def n_params(self) -> int:
         return 2 * self._p
+
+    @property
+    def ansatz(self) -> QuantumCircuit:
+        """The unbound parameterized circuit."""
+        return self._ansatz
 
     def split_params(self, params: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         params = np.asarray(params, dtype=float)
@@ -39,18 +61,17 @@ class QAOACircuit:
         return params[: self._p], params[self._p :]
 
     def build_qaoa_circuit(self, params: np.ndarray) -> QuantumCircuit:
+        """The circuit with angles bound (no measurements)."""
         gammas, betas = self.split_params(params)
-        n = self.n_qubits
-        qc = QuantumCircuit(n)
+        binding = dict(zip(self._gammas, gammas, strict=True))
+        binding.update(zip(self._betas, betas, strict=True))
+        return self._ansatz.assign_parameters(binding)
 
-        qc.h(range(n))
-        for gamma, beta in zip(gammas, betas, strict=True):
-            diagonal_phases = np.exp(-1j * gamma * self._phase_cost)
-            qc.append(DiagonalGate(diagonal_phases), range(n))
-            for qubit in range(n):
-                qc.rx(2 * beta, qubit)
-
-        return qc
+    def measured_circuit(self, params: np.ndarray) -> QuantumCircuit:
+        """The bound circuit with all qubits measured, ready to run on a backend."""
+        circuit = self.build_qaoa_circuit(params).copy()
+        circuit.measure_all()
+        return circuit
 
     def statevector(self, params: np.ndarray) -> np.ndarray:
         """statevector as a numpy array."""
