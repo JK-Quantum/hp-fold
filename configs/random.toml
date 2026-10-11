@@ -1,0 +1,16 @@
+# Random-sampling baseline on a fragment of ubiquitin (PDB 1UBQ).
+
+seed = 0
+output = "data/results/random"
+
+[problem]
+cif = "data/raw/1UBQ.cif"
+length = 6
+pick = 0
+
+[[runs]]
+algorithm = "random"
+repeats = 5
+
+[runs.params]
+n_samples = 1000

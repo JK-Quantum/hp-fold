@@ -1,0 +1,59 @@
+# CVaR-QAOA (alpha 0.05, 0.1, 0.25) against plain QAOA and random, on a fragment of 1UBQ.
+
+seed = 0
+output = "data/results/qaoa_cvar"
+
+[problem]
+cif = "data/raw/1UBQ.cif"
+length = 6
+pick = 0
+
+[[runs]]
+algorithm = "random"
+repeats = 5
+
+[runs.params]
+n_samples = 1000
+
+[[runs]]
+algorithm = "qaoa"
+repeats = 3
+
+[runs.params]
+p = 2
+restarts = 3
+maxiter = 100
+shots = 512
+
+[[runs]]
+algorithm = "qaoa_cvar"
+repeats = 3
+
+[runs.params]
+p = 2
+cvar_alpha = 0.05
+restarts = 3
+maxiter = 100
+shots = 512
+
+[[runs]]
+algorithm = "qaoa_cvar"
+repeats = 3
+
+[runs.params]
+p = 2
+cvar_alpha = 0.1
+restarts = 3
+maxiter = 100
+shots = 512
+
+[[runs]]
+algorithm = "qaoa_cvar"
+repeats = 3
+
+[runs.params]
+p = 2
+cvar_alpha = 0.25
+restarts = 3
+maxiter = 100
+shots = 512
