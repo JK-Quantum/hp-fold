@@ -1,2 +1,0 @@
-algorithm,config,runs,evaluations,p_ground_mean,p_ground_std,p_valid_mean,p_valid_std,approx_ratio_mean,approx_ratio_std
-random,n_samples=1000,5,1000.0,0.0446,0.002607681,0.2744,0.0251853132,0.1631112941,0.0105789462

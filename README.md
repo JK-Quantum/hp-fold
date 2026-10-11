@@ -67,11 +67,23 @@ It's likely that not every algorithm will be finished. See `docs/sprints.md` for
 
 ## Quickstart
 
+Needs Python 3.12 or newer.
+
+Create and activate a virtual environment, then install `requirements.txt`:
+
 ```bash
-uv sync
-uv run pytest -q
-uv run scripts/hello_world.py  # N=6 end-to-end
+python3 -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 ```
+
+Run it from the project folder; a local Qiskit simulator is used as the backend:
+
+```bash
+python main.py
+```
+
+`main` trains QAOA and CVaR-QAOA on the problem in `configs/qollab.toml` (a fragment of ubiquitin), evaluates the trained circuits on the backend in a single job, prints a metrics table (P(ground), P(valid), evaluations) and shows the figures. Set `MPLBACKEND=Agg` to skip the figure windows.
 
 ## Planned experiments
 
