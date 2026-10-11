@@ -5,6 +5,7 @@ from hp_fold import HPProblem
 from hp_fold.analysis.store import load_result, save_result
 from hp_fold.experiments.algorithms import resolve
 from hp_fold.quantum.adapters import run_qaoa, run_qaoa_cvar
+from hp_fold.viz.report import landscape_of
 
 FAST = {"p": 1, "restarts": 1, "maxiter": 15, "shots": 64}
 
@@ -29,6 +30,31 @@ def test_qaoa_result_follows_the_standard_and_survives_saving(problem, tmp_path)
 
     loaded = load_result(save_result(problem, result, tmp_path))
     assert np.array_equal(loaded.probs, result.probs)
+
+
+def test_landscape_grid_adds_the_landscape_extras_the_plot_reads(problem):
+    result = run_qaoa(problem, {**FAST, "landscape_grid": 5}, seed=0)
+    landscape = landscape_of([result])
+    assert landscape is not None
+    _, grid, _ = landscape
+    assert grid.values.shape == (5, 5)
+    assert result.extras["landscape_found"] == [
+        result.extras["gammas"][0],
+        result.extras["betas"][0],
+    ]
+    assert "landscape_values" not in run_qaoa(problem, FAST, seed=0).extras
+
+
+@pytest.mark.parametrize(
+    "params, message",
+    [
+        ({**FAST, "p": 2, "landscape_grid": 5}, "landscape_grid needs p = 1"),
+        ({**FAST, "landscape_grid": 1}, "landscape_grid must be an integer"),
+    ],
+)
+def test_landscape_grid_is_validated(problem, params, message):
+    with pytest.raises(ValueError, match=message):
+        run_qaoa(problem, params, seed=0)
 
 
 def test_qaoa_is_deterministic_given_the_seed(problem):
