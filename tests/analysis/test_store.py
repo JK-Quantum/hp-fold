@@ -7,7 +7,7 @@ import pytest
 from hp_fold import HPProblem
 from hp_fold.analysis.metrics import compute_metrics
 from hp_fold.analysis.result import RunResult
-from hp_fold.analysis.store import load_result, save_result
+from hp_fold.analysis.store import latest_runs, load_problem, load_result, save_result
 
 
 @pytest.fixture(scope="module")
@@ -120,3 +120,55 @@ def test_load_rejects_unknown_schema_version(problem, tmp_path):
     path.write_text(json.dumps(record))
     with pytest.raises(ValueError, match="schema"):
         load_result(path)
+
+
+def _save(problem, algorithm, x, directory):
+    result = RunResult.from_samples(algorithm, problem, [x], evaluations=1, seed=x)
+    return save_result(problem, result, directory)
+
+
+def test_load_problem_rebuilds_the_saved_sequence_and_penalty(tmp_path):
+    problem = HPProblem.from_sequence("HHHHHH", penalty=7.0)
+    path = _save(problem, "random", 0, tmp_path)
+    loaded = load_problem(path)
+    assert loaded.seq == "HHHHHH"
+    assert loaded.penalty == 7.0
+    assert loaded.ground_energy == problem.ground_energy
+
+
+def test_latest_runs_keeps_the_newest_run_of_each_algorithm(tmp_path):
+    problem = HPProblem.from_sequence("PHPPH")
+    _save(problem, "random", 1, tmp_path)
+    _save(problem, "annealing", 2, tmp_path)
+    newest_random = _save(problem, "random", 3, tmp_path)
+    newest_annealing = _save(problem, "annealing", 4, tmp_path)
+    assert latest_runs(tmp_path) == [newest_random, newest_annealing]
+
+
+def test_latest_runs_only_compares_runs_of_the_most_recent_sequence(tmp_path):
+    old = HPProblem.from_sequence("PHPPH")
+    new = HPProblem.from_sequence("HPHHHP")
+    _save(old, "random", 1, tmp_path)
+    _save(old, "annealing", 2, tmp_path)
+    kept = _save(new, "random", 3, tmp_path)
+    assert latest_runs(tmp_path) == [kept]
+
+
+def test_latest_runs_treats_a_different_penalty_as_a_different_problem(tmp_path):
+    _save(HPProblem.from_sequence("HHHHHH", penalty=7.0), "random", 1, tmp_path)
+    kept = _save(
+        HPProblem.from_sequence("HHHHHH", penalty=9.0), "annealing", 2, tmp_path
+    )
+    assert latest_runs(tmp_path) == [kept]
+
+
+def test_latest_runs_orders_algorithms_by_when_they_first_ran(tmp_path):
+    problem = HPProblem.from_sequence("PHPPH")
+    first = _save(problem, "random", 1, tmp_path)
+    second = _save(problem, "annealing", 2, tmp_path)
+    assert latest_runs(tmp_path) == [first, second]
+
+
+def test_latest_runs_of_an_empty_folder_is_an_error(tmp_path):
+    with pytest.raises(ValueError, match="no saved runs"):
+        latest_runs(tmp_path)

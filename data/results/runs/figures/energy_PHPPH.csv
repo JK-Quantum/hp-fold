@@ -1,0 +1,13 @@
+algorithm,energy,p_ground,p_valid,p_invalid
+random (seed 4),-1.0,0.06,0.0,0.0
+random (seed 4),0.0,0.0,0.295,0.0
+random (seed 4),4.0,0.0,0.0,0.315
+random (seed 4),5.0,0.0,0.0,0.115
+random (seed 4),9.0,0.0,0.0,0.18
+random (seed 4),14.0,0.0,0.0,0.035
+annealing (seed 4),-1.0,0.985,0.0,0.0
+annealing (seed 4),0.0,0.0,0.015,0.0
+annealing (seed 4),4.0,0.0,0.0,0.0
+annealing (seed 4),5.0,0.0,0.0,0.0
+annealing (seed 4),9.0,0.0,0.0,0.0
+annealing (seed 4),14.0,0.0,0.0,0.0
