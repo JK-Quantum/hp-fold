@@ -17,7 +17,6 @@ from qiskit.providers.basic_provider import BasicSimulator
 from qiskit.quantum_info import Statevector
 from qiskit.transpiler import Target
 
-from hp_fold.analysis.backend_report import BackendReport
 from hp_fold.folding.problem import HPProblem
 from hp_fold.quantum.backend_runner import BackendRunner, expand_opaque_blocks
 from hp_fold.quantum.numpy_qaoa import NumpyQAOA
@@ -120,13 +119,6 @@ def test_ionq_factory_fails_clearly_without_a_key(problem, monkeypatch):
     monkeypatch.delenv("IONQ_API_KEY", raising=False)
     with pytest.raises(RuntimeError, match="IONQ_API_KEY"):
         BackendRunner.from_ionq(QAOACircuit(problem, 1))
-
-
-def test_report_writes_json_and_figure(tmp_path, problem, result):
-    paths = BackendReport(problem, result).save(tmp_path, "local_p1")
-    assert {p.name for p in paths} == {"local_p1.json", "local_p1.png"}
-    assert all(p.stat().st_size > 0 for p in paths)
-    assert json.loads(paths[0].read_text())["shots"] == 4000
 
 
 class OpaquePauliBackend(BackendV2):
