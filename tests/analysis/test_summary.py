@@ -5,7 +5,7 @@ import pytest
 
 from hp_fold import HPProblem
 from hp_fold.analysis.result import RunResult
-from hp_fold.analysis.summary import summarize
+from hp_fold.analysis.summary import series_over_param, summarize
 
 GROUND = 19  # RDRU, a ground state of PHPPH (E = -1)
 STRAIGHT = 0  # RRRR: valid, no contacts (E = 0)
@@ -99,3 +99,64 @@ def test_results_for_another_sequence_are_rejected(problem):
     result = RunResult.from_samples("alg", other, [0], evaluations=1)
     with pytest.raises(ValueError, match="problem"):
         summarize(problem, [result])
+
+
+def depth_rows(problem):
+    return summarize(
+        problem,
+        [
+            run(problem, GROUND, "qaoa", {"p": 2}),
+            run(problem, STRAIGHT, "qaoa", {"p": 1}),
+            run(problem, GROUND, "random", {"n_samples": 10}),
+            run(problem, GROUND, "qaoa_cvar", {"p": 1}),
+        ],
+    )
+
+
+def test_series_over_param_orders_each_algorithms_rows_by_the_parameter(problem):
+    qaoa = series_over_param(depth_rows(problem), "p")[0]
+    assert qaoa.algorithm == "qaoa" and qaoa.param == "p"
+    assert qaoa.values == (1.0, 2.0)
+    assert [row.p_ground.mean for row in qaoa.rows] == [
+        0.0,
+        1.0,
+    ]
+
+
+def test_series_over_param_skips_rows_without_the_parameter(problem):
+    series = series_over_param(depth_rows(problem), "p")
+    assert [s.algorithm for s in series] == ["qaoa", "qaoa_cvar"]
+
+
+def test_series_over_param_keeps_algorithms_in_order_of_first_appearance(problem):
+    rows = summarize(
+        problem,
+        [
+            run(problem, GROUND, "qaoa_cvar", {"p": 1}),
+            run(problem, GROUND, "qaoa", {"p": 1}),
+        ],
+    )
+    assert [s.algorithm for s in series_over_param(rows, "p")] == ["qaoa_cvar", "qaoa"]
+
+
+def test_series_over_param_with_no_matching_rows_is_empty(problem):
+    assert series_over_param(depth_rows(problem), "layers") == []
+
+
+@pytest.mark.parametrize("bad", ["two", True, None])
+def test_series_over_param_requires_a_number(problem, bad):
+    rows = summarize(problem, [run(problem, GROUND, "qaoa", {"p": bad})])
+    with pytest.raises(ValueError, match="number"):
+        series_over_param(rows, "p")
+
+
+def test_series_over_param_rejects_two_rows_at_the_same_value(problem):
+    rows = summarize(
+        problem,
+        [
+            run(problem, GROUND, "qaoa", {"p": 1, "shots": 10}),
+            run(problem, GROUND, "qaoa", {"p": 1, "shots": 20}),
+        ],
+    )
+    with pytest.raises(ValueError, match="same"):
+        series_over_param(rows, "p")

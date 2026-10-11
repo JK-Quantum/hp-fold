@@ -60,3 +60,45 @@ def _mean_std(values: Sequence[float]) -> MeanStd:
         return MeanStd(math.nan, math.nan)
     std = float(np.std(defined, ddof=1)) if len(defined) > 1 else math.nan
     return MeanStd(float(np.mean(defined)), std)
+
+
+@dataclass(frozen=True, slots=True)
+class ParamSeries:
+    """One algorithm's summary rows ordered by a numeric config parameter."""
+
+    algorithm: str
+    param: str
+    values: tuple[float, ...]
+    rows: tuple[SummaryRow, ...]
+
+
+def series_over_param(rows: Sequence[SummaryRow], param: str) -> list[ParamSeries]:
+    """Group rows by algorithm, keep those that set `param`, and order them by value.
+
+    Algorithms in order of first appearance. Rows without the parameter are skipped; an
+    algorithm with two rows at the same value is ambiguous and rejected.
+    """
+    grouped: dict[str, list[tuple[float, SummaryRow]]] = {}
+    for row in rows:
+        if param not in row.config:
+            continue
+        value = row.config[param]
+        if isinstance(value, bool) or not isinstance(value, int | float):
+            raise ValueError(
+                f"{row.algorithm}: {param!r} must be a number, got {value!r}"
+            )
+        grouped.setdefault(row.algorithm, []).append((float(value), row))
+
+    series = []
+    for algorithm, pairs in grouped.items():
+        pairs.sort(key=lambda pair: pair[0])
+        values = tuple(value for value, _ in pairs)
+        if len(set(values)) != len(values):
+            raise ValueError(
+                f"{algorithm}: several rows have the same {param!r} value; "
+                "filter the other config differences first"
+            )
+        series.append(
+            ParamSeries(algorithm, param, values, tuple(row for _, row in pairs))
+        )
+    return series
