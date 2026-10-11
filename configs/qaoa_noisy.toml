@@ -17,69 +17,69 @@ n_samples = 1000
 
 [[runs]]
 algorithm = "qaoa"
-repeats = 3
+repeats = 5
 
 [runs.params]
 p = 1
-restarts = 3
-maxiter = 100
-shots = 512
+restarts = 5
+maxiter = 300
+shots = 1024
 
 [[runs]]
 algorithm = "qaoa"
-repeats = 3
+repeats = 5
 
 [runs.params]
 p = 2
-restarts = 3
-maxiter = 100
-shots = 512
+restarts = 5
+maxiter = 300
+shots = 1024
 
 [[runs]]
 algorithm = "qaoa"
-repeats = 3
+repeats = 5
 
 [runs.params]
 p = 3
-restarts = 3
-maxiter = 100
-shots = 512
+restarts = 5
+maxiter = 300
+shots = 1024
 
 [[runs]]
 algorithm = "qaoa_noisy"
-repeats = 3
+repeats = 5
 
 [runs.params]
 p = 1
-restarts = 3
-maxiter = 100
-shots = 512
-error_1q = 0.001
-error_2q = 0.01
+restarts = 5
+maxiter = 300
+shots = 1024
+error_1q = 0.0002
+error_2q = 0.002
 readout_error = 0.01
 
 [[runs]]
 algorithm = "qaoa_noisy"
-repeats = 3
+repeats = 5
 
 [runs.params]
 p = 2
-restarts = 3
-maxiter = 100
-shots = 512
-error_1q = 0.001
-error_2q = 0.01
+restarts = 5
+maxiter = 300
+shots = 1024
+error_1q = 0.0002
+error_2q = 0.002
 readout_error = 0.01
 
 [[runs]]
 algorithm = "qaoa_noisy"
-repeats = 3
+repeats = 5
 
 [runs.params]
 p = 3
-restarts = 3
-maxiter = 100
-shots = 512
-error_1q = 0.001
-error_2q = 0.01
+restarts = 5
+maxiter = 300
+shots = 1024
+error_1q = 0.0002
+error_2q = 0.002
 readout_error = 0.01

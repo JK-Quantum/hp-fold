@@ -1,0 +1,47 @@
+# Ideal QAOA at depths 1-3 against random sampling, on a fragment of crambin (PDB 1CRN).
+
+seed = 0
+output = "data/results/qaoa_1crn"
+
+[problem]
+cif = "data/raw/1CRN.cif"
+length = 6
+pick = 1
+
+[[runs]]
+algorithm = "random"
+repeats = 5
+
+[runs.params]
+n_samples = 1000
+
+[[runs]]
+algorithm = "qaoa"
+repeats = 5
+
+[runs.params]
+p = 1
+restarts = 5
+maxiter = 300
+shots = 1024
+landscape_grid = 20
+
+[[runs]]
+algorithm = "qaoa"
+repeats = 5
+
+[runs.params]
+p = 2
+restarts = 5
+maxiter = 300
+shots = 1024
+
+[[runs]]
+algorithm = "qaoa"
+repeats = 5
+
+[runs.params]
+p = 3
+restarts = 5
+maxiter = 300
+shots = 1024

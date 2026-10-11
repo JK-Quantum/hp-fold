@@ -1,0 +1,65 @@
+# Noisy QAOA (p = 1) at three two-qubit error rates against ideal QAOA and random, on a fragment of 1UBQ.
+
+seed = 0
+output = "data/results/qaoa_noise_levels"
+
+[problem]
+cif = "data/raw/1UBQ.cif"
+length = 6
+pick = 0
+
+[[runs]]
+algorithm = "random"
+repeats = 5
+
+[runs.params]
+n_samples = 1000
+
+[[runs]]
+algorithm = "qaoa"
+repeats = 5
+
+[runs.params]
+p = 1
+restarts = 5
+maxiter = 300
+shots = 1024
+
+[[runs]]
+algorithm = "qaoa_noisy"
+repeats = 5
+
+[runs.params]
+p = 1
+restarts = 5
+maxiter = 300
+shots = 1024
+error_1q = 0.0001
+error_2q = 0.0005
+readout_error = 0.01
+
+[[runs]]
+algorithm = "qaoa_noisy"
+repeats = 5
+
+[runs.params]
+p = 1
+restarts = 5
+maxiter = 300
+shots = 1024
+error_1q = 0.0002
+error_2q = 0.002
+readout_error = 0.01
+
+[[runs]]
+algorithm = "qaoa_noisy"
+repeats = 5
+
+[runs.params]
+p = 1
+restarts = 5
+maxiter = 300
+shots = 1024
+error_1q = 0.001
+error_2q = 0.01
+readout_error = 0.01
