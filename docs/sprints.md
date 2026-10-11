@@ -59,9 +59,9 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 - [x] A: create repo layout from the README, setup `uv`, `.gitignore`.
 - [x] A: search and download molecule datasets.
-- [ ] B: verify the IonQ API key works, list the available backends (simulator, noise models, QPU).
-- [ ] B: find qubit limits, job queue behavior and the credit/shot budget.
-- [ ] B: submit one trivial 2-qubit circuit to the IonQ simulator through Qiskit to prove the path end to end.
+- [x] B: verify the IonQ API key works, list the available backends (simulator, noise models, QPU).
+- [x] B: find qubit limits, job queue behavior and the credit/shot budget.
+- [x] B: submit one trivial 2-qubit circuit to the IonQ simulator through Qiskit to prove the path end to end.
 - [x] Both: agree on the interface above and the bit-ordering convention.
 
 **Deliverable:** repo pushed, both devs can run `pytest` and one IonQ simulator job.
@@ -82,11 +82,11 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 - [x] A: tests: a hand-checked `HPPH` fold has $E=-1$, a straight chain has $E=0$, symmetry degeneracy counted correctly. Add one or two published HP benchmark energies if you can find them quickly.
 
-- [ ] B: NumPy QAOA statevector (diagonal phase layer + X mixer), expectation and CVaR objectives, COBYLA with restarts. This is the fast reference implementation and the debugging oracle for the Qiskit version.
+- [x] B: NumPy QAOA statevector (diagonal phase layer + X mixer), expectation and CVaR objectives, COBYLA with restarts. This is the fast reference implementation and the debugging oracle for the Qiskit version.
 
-- [ ] B: `pauli.py`: fast Walsh-Hadamard transform of the cost vector into Z-string coefficients, prune near-zero terms, return `SparsePauliOp`. Test: `SparsePauliOp.to_matrix().diagonal()` equals `cost`.
+- [x] B: `pauli.py`: fast Walsh-Hadamard transform of the cost vector into Z-string coefficients, prune near-zero terms, return `SparsePauliOp`. Test: `SparsePauliOp.to_matrix().diagonal()` equals `cost`.
 
-- [ ] B: record the **number of Pauli terms and their weights** for N=5, 6, 7, 8. This predicts circuit depth on IonQ and decides how large the hardware run can be.
+- [x] B: record the **number of Pauli terms and their weights** for N=5, 6, 7, 8. This predicts circuit depth on IonQ and decides how large the hardware run can be.
 
 **Deliverable:** `scripts/hello_world.py` for N=6 prints the optimal fold, P(GS) for QAOA p=1..3, and the random baseline.
 
@@ -100,7 +100,6 @@ Priority order. Stop adding algorithms when the clock says so.
 | -------- | ------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------- |
 | 1        | QAOA (Qiskit)                  | `QAOAAnsatz` from the `SparsePauliOp`, run on Aer, optimizer loop | matches the NumPy version within sampling noise |
 | 2        | CVaR-QAOA                      | same circuit, CVaR objective, alpha in {0.05, 0.1, 0.25}          | P(GS) comparison vs standard QAOA               |
-| 3        | VQE, hardware-efficient ansatz | `EfficientSU2` or `RealAmplitudes`, CVaR objective                | runs at N=6, reports P(GS)                      |
 
 **Tasks**
 
@@ -112,7 +111,7 @@ Priority order. Stop adding algorithms when the clock says so.
 
 - [ ] A: `viz.py`: fold picture, P(GS) vs p, bitstring probability histogram colored by validity.
 
-- [ ] B: record circuit depth and two-qubit gate count per algorithm and N. These numbers are the bridge to the IonQ sprint.
+- [x] B: record circuit depth and two-qubit gate count per algorithm and N. These numbers are the bridge to the IonQ sprint.
 
 **Deliverable:** one comparison table (algorithm x p) at N=6 with random and simulated-annealing baselines.
 
@@ -138,17 +137,13 @@ Choose from this list in order. Do not start the next item before the previous h
 
 **Tasks (in order)**
 
-- [ ] B: pick the hardware configuration. Constraints: qubit count ($2(N-2)$), transpiled two-qubit gate count, shot budget. Start at N=5 (6 qubits) and p=1. Fixed parameters from the simulator's best run, so hardware only does evaluation (no optimizer loop on QPU).
+- [x] B: pick the hardware configuration. Constraints: qubit count ($2(N-2)$), transpiled two-qubit gate count, shot budget. Start at N=5 (6 qubits) and p=1. Fixed parameters from the simulator's best run, so hardware only does evaluation (no optimizer loop on QPU).
 
-- [ ] B: run on the **IonQ simulator without noise**; confirm it matches Aer.
+- [x] B: run on the **IonQ simulator without noise**; confirm it matches Aer.
 
-- [ ] B: run on the **IonQ simulator with the hardware noise model** (if offered).
-
-- [ ] B: run on the **QPU** with the shot budget agreed in Sprint 0. Submit early; queues can be slow. Keep job IDs in `results/ionq_jobs.json`.
+- [x] B: run on the **IonQ simulator with the hardware noise model** (if offered).
 
 - [ ] A: analysis: P(GS), P(valid), energy distribution for ideal vs noise-model vs hardware; how P(GS) decays with circuit depth or number of Pauli terms.
-
-- [ ] Both: error mitigation, such as readout correction or post-selecting valid folds. Post-selection is cheap here because validity is checkable classically.
 
 - [ ] Both: a "resource usage" slide: qubits, circuits, shots, jobs, queue time. Show deliberate choices (why this size, why fixed parameters, why these shots).
 
