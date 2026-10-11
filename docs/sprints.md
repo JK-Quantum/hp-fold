@@ -88,7 +88,7 @@ Sprints 2 and 3 overlap on purpose; start experiments as soon as one algorithm w
 
 - [x] B: record the **number of Pauli terms and their weights** for N=5, 6, 7, 8. This predicts circuit depth on IonQ and decides how large the hardware run can be.
 
-**Deliverable:** `scripts/hello_world.py` for N=6 prints the optimal fold, P(GS) for QAOA p=1..3, and the random baseline.
+**Deliverable:** `configs/*.toml` run by `scripts/run_experiment.py` print the optimal fold, P(GS) for QAOA p=1..3, and the random baseline.
 
 **Go/no-go check:** if the Pauli expansion at N=6 has an unmanageable term count, switch plan for hardware to N=5 and note it. Don't spend time optimizing it yet.
 
@@ -103,13 +103,15 @@ Priority order. Stop adding algorithms when the clock says so.
 
 **Tasks**
 
-- [ ] B: implement algorithms 1-3 first, behind a common interface: `run(problem, backend, **cfg) -> Result` where `Result` holds probabilities/counts, parameters, optimizer history and circuit stats (depth, two-qubit gate count after transpile).
+- [ ] B: QAOA, CVaR-QAOA and the noisy variant behind the common interface `f(problem, params, seed) -> RunResult` (probabilities, parameters, optimizer history in `extras`). VQE and adiabatic are future steps.
 
 - [x] A: `metrics.py`: P(ground state), P(valid fold), approximation ratio, best-sampled energy, success versus number of shots.
 
 - [x] A: `scripts/run_experiment.py`: config-driven runner (algorithm, N, p, seed) writing JSON to `results/`. Deterministic seeds.
 
-- [ ] A: `viz.py`: fold picture, P(GS) vs p, bitstring probability histogram colored by validity.
+- [x] A: `viz/`: P(GS) vs p (`sweep.py`), probability histogram by energy colored by validity (`energy.py`), plus budget, convergence and landscape figures.
+
+- [ ] A: `viz/fold.py`: picture of a fold on the lattice (H/P colored), drawn for the ground state of each problem.
 
 - [x] B: record circuit depth and two-qubit gate count per algorithm and N. These numbers are the bridge to the IonQ sprint.
 
@@ -119,17 +121,19 @@ Priority order. Stop adding algorithms when the clock says so.
 
 Choose from this list in order. Do not start the next item before the previous has a saved figure.
 
-1. [ ] **Scaling:** N = 6, 8 (and 10 if the simulator can take it) for the best two algorithms. P(GS) vs N and vs p.
+> **Hackathon scope:** only items 4 and 5 (the parts marked done) fit the timeline. Items 1-3 and the remaining parts of 4 and 5 are **future steps**.
 
-2. [ ] **Designability scan (A):** all length-8 sequences, or a random sample of ~100. For each: ground-state degeneracy (after removing the reflection symmetry), plus QAOA success. Question: _are uniquely-folding sequences easier for the quantum algorithms?_
+1. [ ] _(future step)_ **Scaling:** N = 6, 8 (and 10 if the simulator can take it) for the best two algorithms. P(GS) vs N and vs p.
 
-3. [ ] **Penalty sweep (A):** vary lambda, show validity vs ground-state probability.
+2. [ ] _(future step)_ **Designability scan (A):** all length-8 sequences, or a random sample of ~100. For each: ground-state degeneracy (after removing the reflection symmetry), plus QAOA success. Question: _are uniquely-folding sequences easier for the quantum algorithms?_
 
-4. [ ] **Real fragments (A, optional):** extract 8-mers from a PDB entry, map to H/P (document the mapping), include 3-5 of them in the scan. A burial-vs-hydrophobicity plot from the real structure goes on one slide as justification for the model.
+3. [ ] _(future step)_ **Penalty sweep (A):** vary lambda, show validity vs ground-state probability.
 
-5. [ ] **Parameter transfer (B, optional):** initialize layer p+1 from layer p, report optimizer evaluations saved.
+4. [x] **Real fragments (A, optional):** extract fragments from a PDB entry and map to H/P (Kyte-Doolittle or fixed set, in `chem/`), and run them from a config (`problem.cif`). _Future step:_ include them in a designability scan and add a burial-vs-hydrophobicity plot.
 
-**Deliverable:** 3-4 figures with baselines, saved as PNG/PDF in `results/figures/`.
+5. [x] **Parameter transfer (B, optional):** layer p+1 is initialized from layer p (`QAOAExperiment`). _Future step:_ report the optimizer evaluations saved.
+
+**Deliverable:** 3-4 figures with baselines, saved as PNG/PDF in `data/results/<config>/` by `scripts/run_experiment.py`.
 
 ## Sprint 4: IonQ noise benchmark (stretch, 2.5 h)
 
@@ -143,11 +147,11 @@ Choose from this list in order. Do not start the next item before the previous h
 
 - [x] B: run on the **IonQ simulator with the hardware noise model** (if offered).
 
-- [ ] A: analysis: P(GS), P(valid), energy distribution for ideal vs noise-model vs hardware; how P(GS) decays with circuit depth or number of Pauli terms.
+- [ ] A: analysis: P(GS), P(valid), energy distribution for ideal vs noisy simulator (the figures of `run_experiment`). _Future steps:_ hardware (QPU) comparison; P(GS) decay with circuit depth or number of Pauli terms.
 
-- [ ] Both: a "resource usage" slide: qubits, circuits, shots, jobs, queue time. Show deliberate choices (why this size, why fixed parameters, why these shots).
+- [ ] _(future step)_ Both: a "resource usage" slide: qubits, circuits, shots, jobs, queue time. Show deliberate choices (why this size, why fixed parameters, why these shots).
 
-**Deliverable:** one figure: ideal vs noisy simulator vs hardware for the same circuit.
+**Deliverable:** one figure: ideal vs noisy simulator for the same circuit (hardware is a future step).
 
 **Likely failure modes**
 
