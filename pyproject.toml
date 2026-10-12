@@ -1,6 +1,6 @@
 [project]
 name = "hp-fold"
-version = "0.1.0"
+version = "1.0.0"
 description = "Quantum Algorithms for Lattice Protein Folding."
 readme = "README.md"
 authors = [
